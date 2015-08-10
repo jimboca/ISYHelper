@@ -10,6 +10,6 @@ Currently there is no installation processes, you must download.
 **HUGE** Thanks to Automicus (Ryan Kraus) for his https://github.com/automicus/PyISY library which this references.
 
 
-AUTHOR: JimBoCA
-DATE: 8/10/2015
-EMAIL: jimboca@gmail.com
+- AUTHOR: JimBoCA
+- DATE: 8/10/2015
+- EMAIL: jimboca@gmail.com
