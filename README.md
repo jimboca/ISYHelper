@@ -1,4 +1,4 @@
-# isyhelper
+# ISYHelper
 Program to assist with communication between ISY994 and anything else.
 
 This is a python program to assist with communicating between the [ISY994i Series Controller](https://www.universal-devices.com/residential/isy994i-series) and any other device you can access.
