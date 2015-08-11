@@ -1,13 +1,5 @@
 #!/usr/bin/python
 #
-# sudo dpkg-reconfigure tzdata
-# sudo apt-get install libyaml-cpp0.3
-# sudo pip-3.2 install datetime
-# sudo pip-3.2 install collections
-# sudo pip-3.2 install pyaml
-# sudo pip-3.2 install apscheduler
-# 2:
-# sudo easy_install apscheduler
 #
 # TODO:
 # - Check config params are defined
