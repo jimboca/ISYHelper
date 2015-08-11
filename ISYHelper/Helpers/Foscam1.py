@@ -1,13 +1,14 @@
 """
-Foscam 1 devices
+Foscam 1 Helper
 """
 
-from .device import Device
+from .Helper import Helper
 
-class Foscam1(Device):
+class Foscam1(Helper):
 
-    def __init__(self,parent,device):
-        super(Foscam1, self).__init__(parent,device)
+    def __init__(self,parent,hconfig):
+        self.required = ['ip','port','model','user','password']
+        super(Foscam1, self).__init__(parent,hconfig)
         # TODO: We should set by calling monitor.  But then we don't have a monitor running...
         #self.setvar('motion',0);
         params = {
@@ -16,6 +17,7 @@ class Foscam1(Device):
             'http_url': 'http://192.168.1.76:8080/setvar/motion/1'
         }
         self.get_data("set_alarm.cgi",params)
+        self.monitor_job = False
 
     def setvar(self,name,value):
         super(Foscam1, self).setvar(name,value)
@@ -34,7 +36,7 @@ class Foscam1(Device):
     def monitor(self,name,value):
         self.parent.logger.info("Foscam1:monitor: "+ self.name + " name=" + name + " value="+ str(value))
         data = self.get_data("get_status.cgi",{})
-        #sprint("PylDevice:monitor: data=" + data)
+        #sprint("Pylhelper:monitor: data=" + data)
         for item in data.splitlines():
             varl = item.replace('var ','').strip(';').split('=')
             if varl[0] == 'alarm_status':

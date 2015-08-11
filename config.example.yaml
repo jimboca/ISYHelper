@@ -1,5 +1,5 @@
 
-log_file: pylink.log
+log_file: isyhelper.log
 log_level: 0
 
 
@@ -8,7 +8,7 @@ isy_port: 80
 isy_user: someuser
 isy_password: somepassword
 
-monitors:
+helpers:
   - name: DateAndTime
     type: DateAndTime
     level: minute
@@ -22,7 +22,6 @@ monitors:
 #    user: someuser
 #    password: somepassword
 
-devices:
   - name: Test
     ip: 192.168.1.60
     type: Test

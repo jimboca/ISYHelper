@@ -1,4 +1,3 @@
-#!/tools/bin/python
 #!/usr/bin/python
 #
 # sudo dpkg-reconfigure tzdata
@@ -23,7 +22,15 @@ sys.path.insert(0,"../PyISY")
 sys.path.insert(0,"../VarEvents")
 
 # Load our dependancies
+from datetime import datetime
+import PyISY
 import ISYHelper
+from ISYHelper          import load_config,get_logger
+from ISYHelper.Helpers  import Helpers
+from ISYHelper.REST     import REST
+
+#from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 print('PyISYLink: Started: %s' % datetime.now())
 
@@ -33,20 +40,16 @@ config = load_config();
 # Start the log_file
 logger = get_logger(config)
 
+# TODO: Move into Devices/init
 # Background scheduler for everyone to share.
 sched = BackgroundScheduler(logger=logger)
 
-
-# Create the devices first to catch config issues now.
+# Create the helpers now to catch config issues now.
+if not 'helpers' in config:
+    print("ERROR: helpers not defined in config")
+    exit(1)
 try:
-    devices = Devices(logger,config['devices'])
-except ValueError as e:
-    print("Configuration Errors:\n" + str(e))
-    exit()
-
-# Create the devices first to catch config issues now.
-try:
-    monitors = Monitors(logger,sched,config['monitors'])
+    helpers = Helpers(logger,sched,config['helpers'])
 except ValueError as e:
     print("Configuration Errors:\n" + str(e))
     exit()
@@ -54,18 +57,15 @@ except ValueError as e:
 isy = PyISY.ISY(config['isy_host'], config['isy_port'], config['isy_user'], config['isy_password'], False, "1.1", logger)
 logger.info("Connected: " + str(isy.connected))
 isy.auto_update = True
-# TODO: I don't like setting this as attributes, should be functions?
-devices.isy = isy
-devices.sched = sched
-monitors.sched = sched
-monitors.isy = isy
+# TODO: I don't like setting as attributes, should be functions?
+helpers.isy = isy
 
 # Let the scheduler start jobs
 sched.start()
 
 # Start the REST interface
-# TODO: I'm not really happy with having the rest be an object, since re-load does not work
+# TODO: I'm not really happy with having the rest be an object, since auto-reload does not work
 logger.info("Starting REST interface...")
-rest = isyhelperREST(devices)
-devices.rest = rest
+rest = REST(devices)
+helpers.rest = rest
 rest.run()

@@ -10,12 +10,12 @@ urls = (
     '/(.*)', 'default'
 )
 
-# TODO: This is dumb, but I was lazy.  It's a global variable referenced to 
+# TODO: This is dumb, but I was lazy.  It's a global variable referenced to
 # TODO: find our top object in the lower classes, like setvar.GET.
 # TODO: There must be a way to pass this in web.application?
 isyhelperRESTObj = False
 
-class PyISYLinkREST(object):
+class REST(object):
 
     global isyhelperRESTObj
 

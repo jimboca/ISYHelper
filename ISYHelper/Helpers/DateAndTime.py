@@ -5,10 +5,14 @@ DateAndTime Monitor
 # TODO: Add init to set update_interval for seconds, minutes, hours, days
 # TODO: Need isy object defined when start is called...
 
-from .monitor import Monitor
 from datetime import datetime
+from .Helper import Helper
 
-class DateAndTime(Monitor):
+class DateAndTime(Helper):
+
+    def __init__(self,parent,hconfig):
+        self.optional = { 'level' : 'minute' };
+        super(DateAndTime, self).__init__(parent,hconfig)
 
     def second_function(self):
         print('second_function: The time is: %s' % datetime.now())
@@ -28,7 +32,7 @@ class DateAndTime(Monitor):
         self.parent.isy.variables[2]['s.PyISY.Month'].val = dt.month
         self.parent.isy.variables[2]['s.PyISY.Year'].val = dt.year
 
-    def start(self):
+    def sched(self):
         #super(DateAndTime, self).start()
         # Initialize all on startup
         #self.minute_function()

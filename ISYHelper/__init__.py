@@ -4,11 +4,6 @@
 
 import logging
 import yaml
-import PyISY
-
-from .Devices  import Devices
-from .Monitors import Monitors
-from .REST     import REST
 
 def load_config ():
     config_file = open('config.yaml', 'r')
@@ -34,5 +29,3 @@ def get_logger(config):
     else:
         logger = False
     return logger
-
-
