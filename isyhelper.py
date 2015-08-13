@@ -51,14 +51,22 @@ if not 'helpers' in config:
 try:
     helpers = Helpers(logger,sched,config['helpers'])
 except ValueError as e:
-    print("Configuration Errors:\n" + str(e))
+    print("ERROR: Configuration " + str(e))
     exit()
 
+print "Initializing ISY..."
 isy = PyISY.ISY(config['isy_host'], config['isy_port'], config['isy_user'], config['isy_password'], False, "1.1", logger)
-logger.info("Connected: " + str(isy.connected))
+info = " ISY Connected: " + str(isy.connected)
+print(info)
+logger.info(info)
 isy.auto_update = True
-# TODO: I don't like setting as attributes, should be functions?
-helpers.isy = isy
+
+# Now that we have the ISY setup, run all the starters
+try:
+    helpers.start(isy)
+except ValueError as e:
+    print("ERROR: Helper ISY Setup " + str(e))
+    exit()
 
 # Let the scheduler start jobs
 sched.start()
@@ -66,6 +74,6 @@ sched.start()
 # Start the REST interface
 # TODO: I'm not really happy with having the rest be an object, since auto-reload does not work
 logger.info("Starting REST interface...")
-rest = REST(devices)
+rest = REST(helpers)
 helpers.rest = rest
 rest.run()

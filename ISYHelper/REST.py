@@ -19,10 +19,10 @@ class REST(object):
 
     global isyhelperRESTObj
 
-    def __init__(self,devices):
+    def __init__(self,helpers):
         global isyhelperRESTObj
         self.app = web.application(urls, globals())
-        self.devices = devices
+        self.helpers = helpers
         isyhelperRESTObj = self
 
     def run(self):
@@ -48,10 +48,10 @@ class setvar:
         varvalue = li[1]
         dip = web.ctx['ip']
         # TODO: Generate error if device does not exist
-        device = isyhelperRESTObj.devices.get_device(dip)
-        info = 'Device: ' + dip + ' varname='+ varname + ' value=' + str(varvalue)
-        isyhelperRESTObj.devices.logger.info(info)
-        device.setvar(varname,varvalue)
+        helper = isyhelperRESTObj.helpers.get_helper(dip)
+        info = 'REST:setvar:GET: ' + dip + ' varname='+ varname + ' value=' + str(varvalue)
+        isyhelperRESTObj.helpers.logger.info(info)
+        helper.setvar(varname,varvalue)
         return info
 
 #if __name__ == "__main__":

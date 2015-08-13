@@ -24,20 +24,39 @@ class Helper(object):
         if len(missing) > 0:
             raise ValueError("helper key(s)" + ",".join(missing) + " not defined for " + str(hconfig))
         if hasattr(self,'optional'):
-            for key,value in self.optional:
+            for key in self.optional:
                 if key in hconfig:
-                    setattr(self,key,hconfig[key])
+                    if hconfig[key] in self.optional[key]['valid']:
+                        setattr(self,key,hconfig[key])
+                    else:
+                        raise ValueError("helper option " + key + ":"+ hconfig[key] + " not valid, must be one of " + ",".join(self.optional[key]['valid']))
                 else:
-                    setattr(self,key,value)
-        # TODO: Check for unknown keys, e.g. must be in required or optional
+                    setattr(self,key,self.optional[key]['default'])
+        self.isyvp    = "s.IH." + self.name + "."
+        # TODO: Check for unknown keys? e.g. must be in required or optional
 
     # Default scheduler for all
     def sched(self):
         pass
 
+    # Default starter for all
+    def start(self):
+        if not hasattr(self,'isy_variables'):
+            self.isy_variables = []
+        errors = 0
+        for key in self.isy_variables:
+            isy_vname = self.isyvp+key
+            try:
+                setattr(self,key,self.parent.isy.variables[2][isy_vname])
+            except KeyError:
+                self.parent.logger.error('Helper:start: No ISY Variable "' + isy_vname + '"')
+                errors += 1
+        if errors:
+            raise ValueError("Missing ISY Variables, see log")
+
     def setvar(self,name,value):
         self.parent.logger.info("helper:setvar: " + self.name + " name=" + name + " value="+ str(value))
-        isy_vname = 's.Pyl.' + self.name + "." + name
+        isy_vname = self.isyvp + name
         try:
             var = self.parent.isy.variables[2][isy_vname]
         except KeyError:

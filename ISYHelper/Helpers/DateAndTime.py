@@ -11,38 +11,63 @@ from .Helper import Helper
 class DateAndTime(Helper):
 
     def __init__(self,parent,hconfig):
-        self.optional = { 'level' : 'minute' };
+        self.optional = { 'interval' : { 'default' : 'minute', 'valid' : ['day', 'hour', 'minute', 'second'] } }
         super(DateAndTime, self).__init__(parent,hconfig)
+        self.parent.logger.info("Datetime: interval=" + self.interval)
+        # Index of the interval, 0=day, ... 3=second
+        self.interval_index = self.optional['interval']['valid'].index(self.interval)
 
     def second_function(self):
-        print('second_function: The time is: %s' % datetime.now())
+        dt = datetime.now()
+        self.parent.logger.info('second_function: The minute is: %s' % dt.second)
+        self.Second.val = dt.second
 
     def minute_function(self):
-        self.parent.logger.info('minute_function: The minute is: %s' % datetime.now().minute)
-        self.parent.isy.variables[2]['s.PyISY.Minute'].val = datetime.now().minute
+        dt = datetime.now()
+        self.parent.logger.info('minute_function: The minute is: %s' % dt.minute)
+        self.Minute.val = dt.minute
 
     def hour_function(self):
-        self.parent.logger.info('hour_function: The hour is: %s' % datetime.now().hour)
-        self.parent.isy.variables[2]['s.PyISY.Hour'].val = datetime.now().hour
+        dt = datetime.now()
+        self.parent.logger.info('hour_function: The hour is: %s' % dt.hour)
+        self.Hour.val = dt.hour
 
     def day_function(self):
         dt = datetime.now()
         self.parent.logger.info('day_function: It is a new day!  The time is: %s' % dt)
-        self.parent.isy.variables[2]['s.PyISY.Day'].val = dt.day
-        self.parent.isy.variables[2]['s.PyISY.Month'].val = dt.month
-        self.parent.isy.variables[2]['s.PyISY.Year'].val = dt.year
+        self.Day.val = dt.day
+        self.Month.val = dt.month
+        self.Year.val = dt.year
+
+    # Initialize all on startup
+    def start(self):
+        # Build our hash of variables
+        self.isy_variables = ['Day', 'Month', 'Year']
+        if self.interval_index > 0:
+            self.isy_variables.append('Hour')
+        if self.interval_index > 1:
+            self.isy_variables.append('Minute')
+        if self.interval_index > 2:
+            self.isy_variables.append('Second')
+        super(DateAndTime, self).start()
+        if self.interval_index > 2:
+            self.second_function()
+        if self.interval_index > 1:
+            self.minute_function()
+        if self.interval_index > 0:
+            self.hour_function()
+        self.day_function()
 
     def sched(self):
-        #super(DateAndTime, self).start()
-        # Initialize all on startup
-        #self.minute_function()
-        #self.hour_function()
-        #self.day_function()
+        super(DateAndTime, self).sched()
         # Schedules second_function to be run at the change of each second.
-        #self.parent.sched.add_job(second_function, 'cron', second='0-59')
+        if self.interval_index > 2:
+            self.parent.sched.add_job(self.second_function, 'cron', second='0-59')
         # Schedules minute_function to be run at the change of each minute.
-        self.parent.sched.add_job(self.minute_function, 'cron', second='0')
+        if self.interval_index > 1:
+            self.parent.sched.add_job(self.minute_function, 'cron', second='0')
         # Schedules hour_function to be run at the change of each hour.
-        self.parent.sched.add_job(self.hour_function, 'cron', minute='0', second='0')
+        if self.interval_index > 0:
+            self.parent.sched.add_job(self.hour_function, 'cron', minute='0', second='0')
         # Schedules day_function to be run at the start of each day.
         self.parent.sched.add_job(self.day_function, 'cron', minute='0', second='0', hour='0')

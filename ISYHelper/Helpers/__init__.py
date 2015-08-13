@@ -49,6 +49,20 @@ class Helpers(object):
             self.by_name[hconfig['name']] = helper
         if 'ip' in hconfig:
             self.by_ip[hconfig['ip']] = helper
+        # Run the scheduler
+        helper.sched()
+        return helper
+
+    def start(self,isy):
+        self.isy = isy
+        errors = 0
+        for helper in self.children:
+            try:
+                helper.start()
+            except ValueError:
+                errors += 1
+        if errors:
+            raise ValueError(str(errors) + " startup errors, see log")
 
     # TODO: Add args to allow getting by ip, name, type, ...
     def get_helper(self,ip):
