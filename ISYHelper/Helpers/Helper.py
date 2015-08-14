@@ -61,15 +61,31 @@ class Helper(object):
         if errors:
             raise ValueError("Missing ISY Variables, see log")
 
-    def setvar(self,name,value):
-        self.parent.logger.info("helper:setvar: " + self.name + " name=" + name + " value="+ str(value))
-        isy_vname = self.isyvp + name
+    def varname(self,name):
+        return self.isyvp + name
+
+    def existvar(self,name):
+        isy_vname = self.varname(name)
         try:
             var = self.parent.isy.variables[2][isy_vname]
         except KeyError:
-            self.parent.logger.error('helper:setvar: No ISY Variable "' + isy_vname + '"')
-            return
+            return None
+        return var
+
+    def getvar(self,name):
+        var = self.existvar(name)
+        if var is None
+            self.parent.logger.error('helper:getvar: No ISY Variable "' + varname(name) + '"')
+            return None
+        return var
+
+    def setvar(self,name,value):
+        self.parent.logger.info("helper:setvar: " + self.name + " name=" + name + " value="+ str(value))
+        var = self.getvar(name)
+        if var is None:
+            return var
         var.val = value
+        return var
 
     def get_data(self,path,payload):
         url = "http://{}:{}/{}".format(self.ip,self.port,path)

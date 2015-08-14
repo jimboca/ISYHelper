@@ -2,6 +2,7 @@
 Foscam 1 Helper
 """
 
+import time
 from .Helper import Helper
 
 class Foscam1(Helper):
@@ -30,30 +31,23 @@ class Foscam1(Helper):
         self.isy_variables = ['Motion']
         super(Foscam1, self).start()
         # Intialize Motion off
-        self.setvar('Motion',0);
+        var = self.setvar('Motion',0);
+        # Subscribe to changes
+        handler = var.val.subscribe('changed', partial(self.motion_changed,var))
 
     def setvar(self,name,value):
         super(Foscam1, self).setvar(name,value)
-        if name == "Motion":
-            if int(value) == 0:
-                self.parent.logger.info("Stopping monitor")
-                if self.monitor_job is not False:
-                    self.monitor_job.remove()
-                    self.monitor_job = False
-            else:
-                self.parent.logger.info("Starting monitor")
-                self.monitor_job = self.parent.sched.add_job(
-                    self.monitor, 'interval', seconds=10, args=[name,value],
-                    name=self.name+".monitor")
 
     #alarm_regex = re.compile(r'var\s+(.*)=(.*);')
-    def monitor(self,name,value):
+    def motion_changed(self,var):
         lpfx = self.name + ".monitor: "
-        self.parent.logger.info(lpfx + "name=" + name + " value="+ str(value))
-        data = self.get_data("get_status.cgi",{})
-        for item in data.splitlines():
-            varl = item.replace('var ','').strip(';').split('=')
-            if varl[0] == 'alarm_status':
-                self.parent.logger.info(lpfx + varl[0] + '=' + varl[1])
-                if str(varl[1]) == '0':
-                    self.setvar(name,0)
+        self.parent.logger.info(lpfx + "name=" + name + " value="+ str(var.val))
+        while var.val != 0:
+            time.sleep(5)
+            data = self.get_data("get_status.cgi",{})
+            for item in data.splitlines():
+                varl = item.replace('var ','').strip(';').split('=')
+                if varl[0] == 'alarm_status':
+                    self.parent.logger.info(lpfx + varl[0] + '=' + varl[1])
+                    if str(varl[1]) == '0':
+                        var.val = 0;
