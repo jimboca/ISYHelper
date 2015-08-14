@@ -1,16 +1,25 @@
 
+# The log file to write.
 log_file: isyhelper.log
+# log levels: 0 means all
 log_level: 0
 
-
+# TODO: Make it all under isy:
+# Your isy configuration
 isy_host: 192.168.1.64
 isy_port: 80
 isy_user: someuser
 isy_password: somepassword
+# TODO: Add configurable prefix
+# All variables in the ISY will be prefixed with this.
+# isy_variable_prefix: s.IH.
 
+# Helpers
 helpers:
+
   - name: DateAndTime
     type: DateAndTime
+    # second,minute,hour,day
     level: minute
 
 #  - name: Router
@@ -32,7 +41,7 @@ helpers:
 
   - name: MyCamera
     ip: 192.168.1.110
-    port: 8080
+    port: 80
     type: Foscam1
     model: foscam
     user: someuser

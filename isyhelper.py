@@ -1,19 +1,10 @@
 #!/usr/bin/python
 #
-# sudo dpkg-reconfigure tzdata
-# sudo apt-get install libyaml-cpp0.3
-# sudo pip-3.2 install datetime
-# sudo pip-3.2 install collections
-# sudo pip-3.2 install pyaml
-# sudo pip-3.2 install apscheduler
-# 2:
-# sudo easy_install apscheduler
 #
 # TODO:
-# - Check config params are defined
-# - Add config to update every second
 # - web.py only allows passing port on command line?!?!?!?
 #       - Need to pass current host and port to devices, which is used in foscam1
+# - Automatically define current host IP address.
 #
 
 # When run in directory containing downloaded PyIsy
@@ -29,7 +20,6 @@ from ISYHelper          import load_config,get_logger
 from ISYHelper.Helpers  import Helpers
 from ISYHelper.REST     import REST
 
-#from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
 print('PyISYLink: Started: %s' % datetime.now())

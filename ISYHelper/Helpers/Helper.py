@@ -22,14 +22,21 @@ class Helper(object):
             else:
                 missing.append(key)
         if len(missing) > 0:
-            raise ValueError("helper key(s)" + ",".join(missing) + " not defined for " + str(hconfig))
+            raise ValueError("helper key(s)" + ",".join(missing) +
+                " not defined for " + str(hconfig))
         if hasattr(self,'optional'):
             for key in self.optional:
                 if key in hconfig:
-                    if hconfig[key] in self.optional[key]['valid']:
-                        setattr(self,key,hconfig[key])
+                    # Is there a valid list?
+                    if 'valid' in self.optional[key]:
+                        if hconfig[key] in self.optional[key]['valid']:
+                            setattr(self,key,hconfig[key])
+                        else:
+                            raise ValueError("helper option " + key + ":"+
+                                hconfig[key] + " not valid, must be one of " +
+                                ",".join(self.optional[key]['valid']))
                     else:
-                        raise ValueError("helper option " + key + ":"+ hconfig[key] + " not valid, must be one of " + ",".join(self.optional[key]['valid']))
+                        setattr(self,key,hconfig[key])
                 else:
                     setattr(self,key,self.optional[key]['default'])
         self.isyvp    = "s.IH." + self.name + "."
