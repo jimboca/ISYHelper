@@ -53,7 +53,9 @@ Currently there is no installation processes, you must download to try it
 - cp config.example.yaml config.yaml
 - Edit config.yaml for your devices
 - ./isyhelper.py
+
 The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log'
+
 ## Run on startup
 - sudo nano /etc/rc.local
 - Add this line before the 'exit 0' at the end, where /home/pi is the location you downloaded to.
