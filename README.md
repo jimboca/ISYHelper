@@ -69,6 +69,7 @@ sudo pip install collections
 sudo apt-get install libyaml-cpp0.3
 sudo pip install pyaml
 sudo pip install apscheduler
+sudo pip install PyISY
 ```
 
 **HUGE** Thanks to Automicus (Ryan Kraus) for his https://github.com/automicus/PyISY library which this references.
