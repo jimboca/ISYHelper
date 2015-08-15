@@ -70,7 +70,21 @@ sudo apt-get install libyaml-cpp0.3
 sudo pip install pyaml
 sudo pip install apscheduler
 sudo pip install PyISY
+sudo pip install web.py
 ```
+# Isssues
+
+- There is a know issue with the PyISY library and Python 2.7 parsing some XML data from the ISY which results in a error like:
+```
+File "../PyISY/PyISY/Nodes/__init__.py", line 294, in getByID
+i = self.nids.index(nid)
+ValueError: u'<some insteon address>' is not in list
+```
+This may just be an issue of one paticular device I have installed, but we are not sure yet.  The issue has been submitted and is being looked at, but it does not cause any problems with ISYHelper's functionality.
+
+- I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
+
+
 
 **HUGE** Thanks to Automicus (Ryan Kraus) for his https://github.com/automicus/PyISY library which this references.
 
