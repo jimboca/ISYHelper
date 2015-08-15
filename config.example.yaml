@@ -6,13 +6,14 @@ log_level: 0
 
 # TODO: Make it all under isy:
 # Your isy configuration
-isy_host: 192.168.1.64
-isy_port: 80
-isy_user: someuser
-isy_password: somepassword
-# TODO: Add configurable prefix
-# All variables in the ISY will be prefixed with this.
-# isy_variable_prefix: s.IH.
+isy:
+  host: 192.168.1.64
+  port: 80
+  user: someuser
+  password: somepassword
+  # TODO: Add configurable prefix
+  # All variables in the ISY will be prefixed with this.
+  # variable_prefix: s.IH.
 
 # Helpers
 helpers:

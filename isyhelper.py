@@ -26,6 +26,7 @@ print('PyISYLink: Started: %s' % datetime.now())
 
 # Load the config file.
 config = load_config();
+print("This host IP is " + config['this_host']['host'])
 
 # Start the log_file
 logger = get_logger(config)
@@ -39,13 +40,15 @@ if not 'helpers' in config:
     print("ERROR: helpers not defined in config")
     exit(1)
 try:
-    helpers = Helpers(logger,sched,config['helpers'])
+    helpers = Helpers(logger,sched,config['this_host']['url'],config['helpers'])
 except ValueError as e:
     print("ERROR: Configuration " + str(e))
     exit()
 
-print "Initializing ISY..."
-isy = PyISY.ISY(config['isy_host'], config['isy_port'], config['isy_user'], config['isy_password'], False, "1.1", logger)
+info = "Starting PyISY: host=" + config['isy']['host'] + " PORT=" + str(config['isy']['port'])
+print(info)
+logger.info(info)
+isy = PyISY.ISY(config['isy']['host'], config['isy']['port'], config['isy']['user'], config['isy']['password'], False, "1.1", logger)
 info = " ISY Connected: " + str(isy.connected)
 print(info)
 logger.info(info)

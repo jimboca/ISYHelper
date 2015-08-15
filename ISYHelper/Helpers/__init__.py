@@ -8,8 +8,9 @@ from .DateAndTime import DateAndTime
 
 class Helpers(object):
 
-    def __init__(self,logger,sched,helper_configs):
+    def __init__(self,logger,sched,resturl,helper_configs):
         self.logger = logger
+        self.resturl = resturl
         self.children = []
         self.isy = None
         self.sched = sched
