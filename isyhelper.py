@@ -8,9 +8,9 @@
 #
 
 # When run in directory containing downloaded PyIsy
-import sys
-sys.path.insert(0,"../PyISY")
-sys.path.insert(0,"../VarEvents")
+#import sys
+#sys.path.insert(0,"../PyISY")
+#sys.path.insert(0,"../VarEvents")
 
 # Load our dependancies
 from datetime import datetime
