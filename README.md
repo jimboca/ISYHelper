@@ -35,6 +35,7 @@ Controls setting date and time variables on the ISY.  The following ISY variable
   * Day
   * Month
   * Year
+
 The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.
 
 ## Foscam1
