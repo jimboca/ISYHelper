@@ -83,6 +83,8 @@ ValueError: u'<some insteon address>' is not in list
 ```
 This may just be an issue of one paticular device I have installed, but we are not sure yet.  The issue has been submitted and is being looked at, but it does not cause any problems with ISYHelper's functionality.
 
+The official released version of PyISY also has issues with any Z-Wave devices, so will probably have to clone PyISY as well and reference it by commenting out the lines noted near the top of the program. 
+
 - I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
 
 
