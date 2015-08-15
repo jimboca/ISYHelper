@@ -75,7 +75,7 @@ class Helper(object):
     def getvar(self,name):
         var = self.existvar(name)
         if var is None:
-            self.parent.logger.error('helper:getvar: No ISY Variable "' + varname(name) + '"')
+            self.parent.logger.error('helper:getvar: No ISY Variable "' + self.varname(name) + '"')
             return None
         return var
 

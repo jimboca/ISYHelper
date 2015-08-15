@@ -8,9 +8,9 @@
 #
 
 # When run in directory containing downloaded PyIsy
-#import sys
-#sys.path.insert(0,"../PyISY")
-#sys.path.insert(0,"../VarEvents")
+import sys
+sys.path.insert(0,"../PyISY")
+sys.path.insert(0,"../VarEvents")
 
 # Load our dependancies
 from datetime import datetime
@@ -45,6 +45,11 @@ except ValueError as e:
     print("ERROR: Configuration " + str(e))
     exit()
 
+# Prepare the REST interface
+logger.info("Configuring REST interface...")
+rest = REST(config,helpers)
+helpers.rest = rest
+
 info = "Starting PyISY: host=" + config['isy']['host'] + " PORT=" + str(config['isy']['port'])
 print(info)
 logger.info(info)
@@ -67,6 +72,4 @@ sched.start()
 # Start the REST interface
 # TODO: I'm not really happy with having the rest be an object, since auto-reload does not work
 logger.info("Starting REST interface...")
-rest = REST(helpers)
-helpers.rest = rest
 rest.run()

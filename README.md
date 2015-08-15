@@ -18,6 +18,10 @@ The type of helper, which are described in the Helpers section below.
 
 The variables defined by the Helpers will all start with "s.IH." (will make this configurable) followed by the device 'name', followed by the variable name.  For example if you defined your DateAndTime Helper name as 'DT', then it will set variables like "s.IH.DT.Minute" on your ISY.  When isyhelper starts up it will check for the variables that it needs to exist, and will quit with an error if they are not.
 
+## ssl
+
+You can enable SSL by setting the certificate and private_key params to point to your files.
+
 # Helpers
 
 ISYHelper defines unique Helper modules for the type of device, and has been written in a way to make adding any new helpers as easy as possible.
@@ -25,9 +29,11 @@ ISYHelper defines unique Helper modules for the type of device, and has been wri
 Currently there are:
 
 ## Test
+
 This is really just a test device for development.
 
 ## DateAndTime
+
 Controls setting date and time variables on the ISY.  The following ISY variables can be set
   * Second
   * Minute
@@ -37,6 +43,35 @@ Controls setting date and time variables on the ISY.  The following ISY variable
   * Year
 
 The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.
+
+## Maker
+
+Receives IFTTT Maker requests.  This is the intial version of Maker support, so it will likely change based on feedback from everyone.
+
+Currently the 'name' and 'type' must be 'Maker' in your config file.  You must set the 'token' to something, it's like a lame password...
+
+You must forward a port on your router to the IP address of the device runing ISYHelper port 8080.  (Yes it's hardcode to 8080, I need to add a config param...)
+
+### Maker Setup
+
+- Setup your [Maker channel on IFTTT](https://ifttt.com/maker)
+- Click on the "Make a web request" on that page
+- Set the Trigger to what you want
+- Set the Action:
+  - URL: http://your_host_or_ip:port_num/maker
+  - Method: POST
+  - Content Type: application/json
+  - Body:  { "token" : "my_secret_token", "type" : "variable", "name" : "varname", "value" : "1" }
+
+  For the above, you can use https if you have a certificate, and your_host_or_ip is for your router name or IP to the outside, and port_num is the port number you set to forward to 8080.  The token must match the token in your config file.
+
+  For the Body:
+  - type
+  The type of object on the ISY we will set, only variable right now
+  - name
+  The Variable name to set, varname in the example
+  - value
+  The Value to set the variable
 
 ## Foscam1
 
@@ -48,7 +83,8 @@ This will set the ISY variable 'Motion' for the device.
 
 # Install and Run
 ## Download and configure
-Currently there is no installation processes, you must download to try it
+Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
+
 - git clone https://github.com/jimboca/ISYHelper
 - cd ISYHelper
 - cp config.example.yaml config.yaml
@@ -60,10 +96,12 @@ The program will record all information and errors in the log file, to see any e
 ## Run on startup
 - sudo nano /etc/rc.local
 - Add this line before the 'exit 0' at the end, where /home/pi is the location you downloaded to.
+```
 ( cd /home/pi/ISYHelper ; ./isyhelper.py & )
+```
 
-# TODO:
-* Generate a list of python modules that need to be installed to use this.  I think this is what is required?
+# To Do
+* Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
 ```
 sudo pip install datetime
 sudo pip install collections
@@ -72,8 +110,23 @@ sudo pip install pyaml
 sudo pip install apscheduler
 sudo pip install PyISY
 sudo pip install web.py
+sudo pip install wsgilog
 ```
+If you plan to use SSL (https) you need to install these as well:
+```
+sudo apt-get install libffi-dev
+sudo apt-get install python-dev
+sudo pip install pyOpenSSL
+```
+Note: It takes a while to compile pyOpenSSL packages like cryptography...
+
 # Isssues
+
+- IFTTT Maker Channel does not allow a self-signed certificate, so I have not been able to test...  I need to get a real certificate...
+
+I created one with this info:
+  - http://heapkeeper-heap.github.io/hh/thread_1344.html
+  - http://www.8bitavenue.com/2015/05/webpy-ssl-support/
 
 - There is a know issue with the PyISY library and Python 2.7 parsing some XML data from the ISY which results in a error like:
 ```
@@ -83,7 +136,7 @@ ValueError: u'<some insteon address>' is not in list
 ```
 This may just be an issue of one paticular device I have installed, but we are not sure yet.  The issue has been submitted and is being looked at, but it does not cause any problems with ISYHelper's functionality.
 
-The official released version of PyISY also has issues with any Z-Wave devices, so will probably have to clone PyISY as well and reference it by commenting out the lines noted near the top of the program. 
+The official released version of PyISY also has issues with any Z-Wave devices, so will probably have to clone PyISY as well and reference it by commenting out the lines noted near the top of the program.
 
 - I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
 

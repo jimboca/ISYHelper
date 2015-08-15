@@ -5,6 +5,7 @@ PyISYLink Helpers
 from .Tester      import Tester
 from .Foscam1     import Foscam1
 from .DateAndTime import DateAndTime
+from .Maker       import Maker
 
 class Helpers(object):
 
@@ -40,6 +41,8 @@ class Helpers(object):
             helper = Foscam1(self,hconfig)
         elif dtype == "DateAndTime":
             helper = DateAndTime(self,hconfig)
+        elif dtype == "Maker":
+            helper = Maker(self,hconfig)
         else:
             self.logger.error("Unknown helper type "+ dtype)
             raise ValueError("See Log")
@@ -70,4 +73,10 @@ class Helpers(object):
         if ip in self.by_ip:
             return self.by_ip[ip]
         self.logger.error("Unable to get helper by ip '" + ip + "'");
+        return False
+
+    def get_helper_by_name(self,name):
+        if name in self.by_name:
+            return self.by_name[name]
+        self.logger.error("Unable to get helper by name '" + name + "'");
         return
