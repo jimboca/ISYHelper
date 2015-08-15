@@ -93,4 +93,4 @@ The official released version of PyISY also has issues with any Z-Wave devices, 
 
 - AUTHOR: JimBoCA
 - DATE: 8/10/2015
-- EMAIL: jimboca@gmail.com
+- EMAIL: jimboca3@gmail.com
