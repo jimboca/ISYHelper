@@ -20,14 +20,15 @@ class Maker(Helper):
         errors = 0
         for key in ['token','type','name','value']:
             if not key in jdata:
-                self.parent.logger.error('Missing key: ' + key)
+                self.parent.logger.error(lpfx + 'Missing key: ' + key)
                 errors += 1
         if errors > 0:
+            raise ValueError("Missing Keys")
             return
         if not jdata['token'] == self.token:
-            self.parent.logger.error('Token mismatch ' + jdata['token'] + ' != ' + self.token)
+            self.parent.logger.error(lpfx + 'Token mismatch ' + jdata['token'] + ' != ' + self.token)
             return
         if jdata['type'] == 'variable':
             var = self.setvar(jdata['name'],jdata['value']);
         else:
-            self.parent.logger.error("Unknown type: " + jdata['type'])
+            self.parent.logger.error(lpfx + 'Unknown type: ' + jdata['type'])

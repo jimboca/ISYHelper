@@ -30,6 +30,11 @@ helpers:
     level: minute
 
   # The name and type must currently be Maker!
+  # In IFTT, set
+  # url: http://your_host_ip:your_outside_port/maker
+  # Method: POST
+  # Content Type: application/json
+  # Body: { "token" : "my_secret_token", "type" : "variable", "name" : "your_variable_name", "value" : "the_value" }
   - name: Maker
     type: Maker
     # Anything you chose.
