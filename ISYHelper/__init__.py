@@ -36,8 +36,8 @@ def get_logger(config):
     if config['log_file'] != False:
         print('pylink: Writing to log: ' + config['log_file'])
         logging.basicConfig(filename=config['log_file']);
-        logger = logging.getLogger()
-        logger.setLevel(0)
+        logger = logging.getLogger('IH')
+        logger.setLevel(logging.DEBUG)
     else:
         logger = False
     return logger

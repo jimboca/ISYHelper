@@ -39,6 +39,7 @@ class REST(object):
                 CherryPyWSGIServer.ssl_private_key = self.config['ssl']['private_key']
 
     def run(self):
+        web.config.log_file = self.config['log_file']
         self.app.run(WebLog)
 
 class default:
