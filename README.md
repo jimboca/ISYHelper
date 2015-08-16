@@ -93,6 +93,10 @@ Currently there is no installation processes, you must download to try it.  Also
 
 The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log'
 
+If you start in a terminal like shown and close the terminal then isyhelper will exit.  If you want it to stay running after closing the terminal, start it with:
+  - ./isyhelper.py > ihs.log 2>&1 &
+This will be fixed in a future version...
+
 ## Run on startup
 - sudo nano /etc/rc.local
 - Add this line before the 'exit 0' at the end, where /home/pi is the location you downloaded to.
