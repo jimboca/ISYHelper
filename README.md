@@ -48,8 +48,8 @@ The config file allows you to choose the level of updates with the interval opti
 
 This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!
 
-To use this, you currently have to grab it from git.  So in the same directory where you have ISYHelper (not inside the ISYHelper directory) run:
-git clone https://github.com/makermusings/fauxmo
+To use this, you currently have to grab my version from from git.  So in the same directory where you have ISYHelper (not inside the ISYHelper directory) run:
+git clone https://github.com/jimboca/fauxmo
 
 See the config.example.yaml for some examples.
 
