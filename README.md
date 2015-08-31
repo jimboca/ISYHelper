@@ -111,6 +111,8 @@ This will set the ISY variable 'Motion' for the device.
 Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
 
 - git clone https://github.com/jimboca/ISYHelper
+- git clone https://github.com/jimboca/PyISY
+- git clone https://github.com/jimboca/fauxmo
 - cd ISYHelper
 - cp config.example.yaml config.yaml
 - Edit config.yaml for your devices
