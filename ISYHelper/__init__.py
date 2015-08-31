@@ -23,6 +23,7 @@ def load_config ():
         'port' : '8080',
     }
     config['this_host']['url'] = 'http://'+config['this_host']['host']+':'+config['this_host']['port']
+    config['log_format']       = '%(asctime)-15s:%(name)s:%(levelname)s: %(message)s'
     return config
 
 def get_logger(config):
@@ -35,7 +36,7 @@ def get_logger(config):
 
     if config['log_file'] != False:
         print('pylink: Writing to log: ' + config['log_file'])
-        logging.basicConfig(filename=config['log_file']);
+        logging.basicConfig(filename=config['log_file'], format=config['log_format']);
         logger = logging.getLogger('IH')
         logger.setLevel(logging.DEBUG)
     else:

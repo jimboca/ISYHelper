@@ -45,6 +45,9 @@ except ValueError as e:
     print("ERROR: Configuration " + str(e))
     exit()
 
+if 'ifttt' in config:
+    helpers.ifttt = config['ifttt']
+
 # Prepare the REST interface
 logger.info("Configuring REST interface...")
 rest = REST(config,helpers)

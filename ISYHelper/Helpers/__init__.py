@@ -6,6 +6,7 @@ from .Tester      import Tester
 from .Foscam1     import Foscam1
 from .DateAndTime import DateAndTime
 from .Maker       import Maker
+from .FauxMo      import FauxMo
 
 class Helpers(object):
 
@@ -43,6 +44,8 @@ class Helpers(object):
             helper = DateAndTime(self,hconfig)
         elif dtype == "Maker":
             helper = Maker(self,hconfig)
+        elif dtype == "FauxMo":
+            helper = FauxMo(self,hconfig)
         else:
             self.logger.error("Unknown helper type "+ dtype)
             raise ValueError("See Log")

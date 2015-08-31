@@ -64,3 +64,24 @@ helpers:
     model: foscam
     user: someuser
     password: somepassword
+
+  # The Belkin WeMo emulator
+  - name: FauxMo
+    type: FauxMo
+    devices:
+      - name: Kitchen Lights
+        address: A1 B1 C1  1
+        type: ISY
+      - name: Family Room Table
+        address: A2 B2 C2 1
+        type: ISY
+      - name: TV
+        type: Maker
+        on_event:  family_room_watch_tv
+        off_event: family_room_av_off
+      - name: Chromecast
+        type: Maker
+        on_event:  family_room_watch_chromecast
+        off_event: family_room_av_off
+
+

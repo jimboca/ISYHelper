@@ -29,7 +29,7 @@ class REST(object):
         self.config = config
         self.helpers = helpers
         isyhelperRESTObj = self
-        # TODO: Check thatthe files exist!
+        # TODO: Check that the files exist!
         if 'ssl' in self.config:
             if 'certificate' in self.config['ssl']:
                 print('Using certificate: '  + self.config['ssl']['certificate'])
@@ -39,7 +39,12 @@ class REST(object):
                 CherryPyWSGIServer.ssl_private_key = self.config['ssl']['private_key']
 
     def run(self):
+        web.config.log_format = self.config['log_format']
         web.config.log_file = self.config['log_file']
+        web.config.log_toprint = False
+        web.config.log_tofile = True
+        web.config.log_interval = "D" # OR W0
+        web.config.log_backups  = 7 # 7 Days?
         self.app.run(WebLog)
 
 class default:

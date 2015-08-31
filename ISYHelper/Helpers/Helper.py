@@ -87,6 +87,32 @@ class Helper(object):
         var.val = value
         return var
 
+    def post_ifttt_maker(self,event):
+        url = 'https://maker.ifttt.com:443/trigger/{}/with/key/{}'.format(event,self.parent.ifttt['maker_secret_key'])
+        self.parent.logger.info("helper:post_ifttt_maker:send: " + url)
+        try:
+            response = requests.post(
+                url,
+                timeout=10
+            )
+        except requests.exceptions.Timeout:
+            self.parent.logger.error("Connection to the maker.ifttt timed out")
+            return False
+        self.parent.logger.info("helper:post_ifttt_maker:success: " + response.url)
+        if response.status_code == 200:
+            return True
+        elif response.status_code == 400:
+            self.parent.logger.error("Bad request from helper %s: %s", self.name, response.text)
+        elif response.status_code == 401:
+            # Authentication error
+            self.parent.logger.error(
+                "Failed to authenticate, "
+                "please check your username and password")
+            return
+        else:
+            self.parent.logger.error("Invalid response from maker.ifttt: %s", response)
+        return False
+    
     def get_data(self,path,payload):
         url = "http://{}:{}/{}".format(self.ip,self.port,path)
         self.parent.logger.info("helper:get_data:send: " + url)

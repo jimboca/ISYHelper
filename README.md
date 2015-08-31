@@ -44,6 +44,28 @@ Controls setting date and time variables on the ISY.  The following ISY variable
 
 The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.
 
+## FauxMo
+
+This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!
+
+See the config.example.yaml for some examples.
+
+### devices
+
+I will add support soon for the 'Spoken Name' set by the ISY, but currently you must specify each device you want to control.  You can find all the device names and address http://your_isy_ip/rest/nodes
+
+  * name
+    Currently the name must be specified, and is the full path to the device name in your folder hierarchy.  This is required by the PyISY Module I am using, so I will look into a better way to support just a name seperate from the path since this is what you call it when asking Alexa to control it.
+  * address
+    This is the device or scene address.  This is not required if name is the real device name.  But if you want a different spoken name then the ISY device full path name then enter the device address
+  * type
+    This can be 'ISY' or 'Maker', and the default is 'ISY' if not specified.
+  * on_event
+    This is the Maker IFTTT event to turn the device on
+  * off_event
+    This is the Maker IFTTT event to turn the device off
+
+
 ## Maker
 
 Receives IFTTT Maker requests.  This is the intial version of Maker support, so it will likely change based on feedback from everyone.
@@ -115,6 +137,14 @@ sudo pip install apscheduler
 sudo pip install PyISY
 sudo pip install web.py
 sudo pip install wsgilog
+sudo apt-get install nmap
+sudo pip install libnmap
+```
+For some reason 'sudo pip install libnmap' wont work for me?  So had to do it this way:
+```
+git clone https://github.com/savon-noir/python-libnmap.git
+cd python-libnmap
+python setup.py install
 ```
 If you plan to use SSL (https) you need to install these as well:
 ```

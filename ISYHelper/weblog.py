@@ -4,22 +4,23 @@ import sys, logging
 from wsgilog import WsgiLog
 #import config
 
-# From: http://stackoverflow.com/questions/7192788/how-do-i-redirrect-the-output-in-web-py
+# Copied this code from:
+#  http://stackoverflow.com/questions/7192788/how-do-i-redirrect-the-output-in-web-py
 
 class WebLog(WsgiLog):
   def __init__(self, application):
     WsgiLog.__init__(
-        self,
-        application,
-        logformat = '[%(asctime)s][%(name)s][%(levelname)s]: %(message)s',
-        debug = True,
-        tofile = True,
-        toprint =  False,
-        logname = "IH.WebLog",
-        file = web.config.log_file,
-        loglevel = logging.DEBUG,
-        interval = 'W0', # config.log_interval,
-        backups = 7, #config.log_backups
+      self,
+      application,
+      logformat = web.config.log_format,
+      debug     = True,
+      tofile    = web.config.log_tofile,
+      toprint   =  False,
+      logname  = "WebLog", # For the name in logformat
+      file      = web.config.log_file,
+      loglevel  = logging.DEBUG,
+      interval  = web.config.log_interval,
+      backups   = web.config.log_backups
     )
 
   def __call__(self, environ, start_response):
