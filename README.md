@@ -55,12 +55,18 @@ See the config.example.yaml for some examples.
 
 ### devices
 
-I will add support soon for the 'Spoken Name' set by the ISY, but currently you must specify each device you want to control.  You can find all the device names and address http://your_isy_ip/rest/nodes
+By default all devices that have a 'Spoken' property sent in the device notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
+
+You only need to hard code the device in the config for devices that do not have the spoken property set in the admin console. You can find all the device names and address http://your_isy_ip/rest/nodes
+
+Also, currently scenes must be added manually. The next enahncement will be to allow setting a 'Spoken' property on the scene controler.
 
   * name
-    Currently the name must be specified, and is the full path to the device name in your folder hierarchy.  This is required by the PyISY Module I am using, so I will look into a better way to support just a name seperate from the path since this is what you call it when asking Alexa to control it.
+    Currently the name must be specified, and can be the full full path to the device name in your folder hierarchy, or just the device name.  This will also be what you call the device for Alexa, unless the spoken param is set below.
   * address
     This is the device or scene address.  This is not required if name is the real device name.  But if you want a different spoken name then the ISY device full path name then enter the device address
+  * spoken
+    (Not supported yet.) You can add a device by name, then set spoken to have the spoken name be different thanthe device name.
   * type
     This can be 'ISY' or 'Maker', and the default is 'ISY' if not specified.
   * on_event
@@ -68,6 +74,7 @@ I will add support soon for the 'Spoken Name' set by the ISY, but currently you 
   * off_event
     This is the Maker IFTTT event to turn the device off
 
+Note that each time you start isyhelper.py, you must tell Alexa to 'discover devices'.  This is because the port numbers for each device are random so they are likely different each time.
 
 ## Maker
 
