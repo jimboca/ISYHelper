@@ -46,27 +46,27 @@ The config file allows you to choose the level of updates with the interval opti
 
 ## FauxMo
 
-This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!
+This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!  
 
 To use this, you currently have to grab my version from from git.  So in the same directory where you have ISYHelper (not inside the ISYHelper directory) run:
-git clone https://github.com/jimboca/fauxmo
+git clone https://github.com/jimboca/fauxmo as shown in the install instructions below.
 
 See the config.example.yaml for some examples.
 
 ### devices
 
-By default all devices that have a 'Spoken' property sent in the device notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
+By default all devices that have a 'Spoken' property set in the ISY notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
 
-You only need to hard code the device in the config for devices that do not have the spoken property set in the admin console. You can find all the device names and address http://your_isy_ip/rest/nodes
+You only need to hard code the device in the config for devices that do not have the Spoken property set. You can find all your device names and address http://your_isy_ip/rest/nodes
 
-Also, currently scenes must be added manually. The next enahncement will be to allow setting a 'Spoken' property on the scene controler.
+To control a scene that has a controller, just set the Spoken property on the controller of the scene in the admin console.  If the scene does not have a controller, you will have to add it to the config file.
 
   * name
     Currently the name must be specified, and can be the full full path to the device name in your folder hierarchy, or just the device name.  This will also be what you call the device for Alexa, unless the spoken param is set below.
   * address
-    This is the device or scene address.  This is not required if name is the real device name.  But if you want a different spoken name then the ISY device full path name then enter the device address
+    This is the device or scene address.  This is not required if name is the real device name.
   * spoken
-    (Not supported yet.) You can add a device by name, then set spoken to have the spoken name be different thanthe device name.
+    You can add a device by name, then set spoken to have the spoken name be different than the device name.
   * type
     This can be 'ISY' or 'Maker', and the default is 'ISY' if not specified.
   * on_event
@@ -117,6 +117,9 @@ This will set the ISY variable 'Motion' for the device.
 ## Download and configure
 Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
 
+- Create a directory where you want to store it:
+  - mkdir isyhelper
+  - cd isyhelper
 - git clone https://github.com/jimboca/ISYHelper
 - git clone https://github.com/jimboca/PyISY
 - git clone https://github.com/jimboca/fauxmo
@@ -125,7 +128,7 @@ Currently there is no installation processes, you must download to try it.  Also
 - Edit config.yaml for your devices
 - ./isyhelper.py
 
-The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log'
+The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log', or whatever you set the log to in your config.yaml.
 
 If you start in a terminal like shown and close the terminal then isyhelper will exit.  If you want it to stay running after closing the terminal, start it with:
   - ./isyhelper.py > ihs.log 2>&1 &
@@ -152,13 +155,14 @@ sudo pip install wsgilog
 sudo apt-get install nmap
 sudo pip install libnmap
 ```
+Only if you are going to use the NMap helper (which isn't released yet)
 For some reason 'sudo pip install libnmap' wont work for me?  So had to do it this way:
 ```
 git clone https://github.com/savon-noir/python-libnmap.git
 cd python-libnmap
 python setup.py install
 ```
-If you plan to use SSL (https) you need to install these as well:
+If you plan to use SSL (https) for Maker, and you have a real certificate (not self signed) you need to install these as well:
 ```
 sudo apt-get install libffi-dev
 sudo apt-get install python-dev
@@ -173,16 +177,6 @@ Note: It takes a while to compile pyOpenSSL packages like cryptography...
 I created one with this info:
   - http://heapkeeper-heap.github.io/hh/thread_1344.html
   - http://www.8bitavenue.com/2015/05/webpy-ssl-support/
-
-- There is a know issue with the PyISY library and Python 2.7 parsing some XML data from the ISY which results in a error like:
-```
-File "../PyISY/PyISY/Nodes/__init__.py", line 294, in getByID
-i = self.nids.index(nid)
-ValueError: u'<some insteon address>' is not in list
-```
-This may just be an issue of one paticular device I have installed, but we are not sure yet.  The issue has been submitted and is being looked at, but it does not cause any problems with ISYHelper's functionality.
-
-The official released version of PyISY also has issues with any Z-Wave devices, so will probably have to clone PyISY as well and reference it by commenting out the lines noted near the top of the program.
 
 - I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
 
