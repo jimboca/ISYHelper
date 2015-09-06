@@ -61,6 +61,8 @@ You only need to hard code the device in the config for devices that do not have
 
 To control a scene that has a controller, just set the Spoken property on the controller of the scene in the admin console.  If the scene does not have a controller, you will have to add it to the config file.
 
+IMPORTANT: Currently if you 'group device' it will not find your Spoken property on your devie.  This is an issue with the PyISY library that I will try to fix soon because almost all my devices were grouped.
+
   * name
     Currently the name must be specified, and can be the full full path to the device name in your folder hierarchy, or just the device name.  This will also be what you call the device for Alexa, unless the spoken param is set below.
   * address
