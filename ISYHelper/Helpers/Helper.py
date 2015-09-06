@@ -62,15 +62,16 @@ class Helper(object):
             raise ValueError("Missing ISY Variables, see log")
 
     def get_isy_node_by_basename(self,name):
+        #print('get_isy_node_by_basename: Looking for "' + name + '"')
         for child in self.parent.isy.nodes.allLowerNodes:
-            #print('get_isy_node_by_basename: check:' + self.parent.isy.nodes[child[2]].name + ' from: ' + str(child))
-            if (child[0] is 'node' or child[0] is 'group') and self.parent.isy.nodes[child[2]].name is name:
+            #print('get_isy_node_by_basename: check: "' + self.parent.isy.nodes[child[2]].name + '" from: ' + str(child))
+            if (child[0] == 'node' or child[0] == 'group') and self.parent.isy.nodes[child[2]].name == name:
                 # Returns the node
                 print('get_isy_node_by_basename: match:' + name + '=' +
                       self.parent.isy.nodes[child[2]].name + ' ' + str(child))
                 return self.parent.isy.nodes[child[2]]
         # TODO: Throw exception?
-        print('get_isy_node_by_basename: no match:' + name)
+        print('get_isy_node_by_basename: no match: "' + name + "'")
         return None
         
     def varname(self,name):

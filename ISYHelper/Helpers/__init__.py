@@ -36,6 +36,7 @@ class Helpers(object):
             raise ValueError("See Log")
         # TODO: There must be a good way to use a variable for a class name?
         dtype = hconfig['type']
+        print("Initializing new helper: " + dtype)
         if dtype == "Tester":
             helper = Tester(self,hconfig)
         elif dtype == "Foscam1":
@@ -49,7 +50,6 @@ class Helpers(object):
         else:
             self.logger.error("Unknown helper type "+ dtype)
             raise ValueError("See Log")
-            # TODO: Just create default helper?
             return
         self.children.append(helper)
         if 'name' in hconfig:
@@ -57,6 +57,7 @@ class Helpers(object):
         if 'ip' in hconfig:
             self.by_ip[hconfig['ip']] = helper
         # Run the scheduler
+        print("  Scheduling helper: " + helper.name)
         helper.sched()
         return helper
 
@@ -65,6 +66,7 @@ class Helpers(object):
         errors = 0
         for helper in self.children:
             try:
+                print("Starting helper: " + helper.name)
                 helper.start()
             except ValueError:
                 errors += 1
