@@ -65,7 +65,7 @@ class FauxMo(Helper):
             if child[0] is 'node':
                 mnode = self.parent.isy.nodes[child[2]]
                 spoken = mnode.spoken
-                if spoken is not False:
+                if spoken is not None:
                     # TODO: Should this be a comman seperate list of which echo will respond?
                     # TODO: Or should that be part of notes?
                     if spoken == '1':
