@@ -7,6 +7,7 @@ from .Foscam1     import Foscam1
 from .DateAndTime import DateAndTime
 from .Maker       import Maker
 from .FauxMo      import FauxMo
+from .PyHue       import PyHue
 
 class Helpers(object):
 
@@ -47,6 +48,8 @@ class Helpers(object):
             helper = Maker(self,hconfig)
         elif dtype == "FauxMo":
             helper = FauxMo(self,hconfig)
+        elif dtype == "PyHue":
+            helper = PyHue(self,hconfig)
         else:
             self.logger.error("Unknown helper type "+ dtype)
             raise ValueError("See Log")

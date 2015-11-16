@@ -21,6 +21,11 @@ isy:
   # All variables in the ISY will be prefixed with this.
   # variable_prefix: s.IH.
 
+ifttt:
+  # From: https://ifttt.com/maker
+  # Your secret key is:
+  maker_secret_key: ThisShouldBeYourMakerSecretkey
+
 # Helpers
 helpers:
 
@@ -65,9 +70,17 @@ helpers:
     user: someuser
     password: somepassword
 
+  - name: PyHue
+    type: PyHue
+    # If this is true it will register all devices with a spoken property
+    use_spoken: true
+
   # The Belkin WeMo emulator
   - name: FauxMo
     type: FauxMo
+    # If this is true it will register all devices with a spoken property
+    # It is better to use the PyHue helper for this instead.
+    use_spoken: false
     devices:
       - name: Kitchen Lights
         address: A1 B1 C1  1

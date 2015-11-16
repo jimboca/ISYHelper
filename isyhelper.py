@@ -7,6 +7,8 @@
 # - Automatically define current host IP address.
 #
 
+VERSION = "1.05"
+
 # When run in directory containing downloaded PyIsy
 import sys
 sys.path.insert(0,"../PyISY")
@@ -22,7 +24,7 @@ from ISYHelper.REST     import REST
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-print('PyISYLink: Started: %s' % datetime.now())
+print('ISYHelper: Version %s Started: %s' % (VERSION, datetime.now())
 
 # Load the config file.
 config = load_config();

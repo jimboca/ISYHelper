@@ -39,6 +39,7 @@ class FauxMo(Helper):
 
     def __init__(self,parent,hconfig):
         self.required = ['devices']
+        self.optional = { 'use_spoken' : { 'default' : 'true'} }
         self.fauxmos  = []
         self.ip = "ifttt.ifttt.com"
         self.port = 443
@@ -60,23 +61,24 @@ class FauxMo(Helper):
             except ValueError as e:
                 self.parent.logger.error(str(e))
                 errors += 1
-        lpfx = self.lpfx + ':auto_add_isy:'
-        for child in self.parent.isy.nodes.allLowerNodes:
-            if child[0] is 'node':
-                mnode = self.parent.isy.nodes[child[2]]
-                spoken = mnode.spoken
-                if spoken is not None:
-                    # TODO: Should this be a comman seperate list of which echo will respond?
-                    # TODO: Or should that be part of notes?
-                    if spoken == '1':
-                        spoken = mnode.name
-                    self.parent.logger.info(lpfx + " name=" + mnode.name + ", spoken=" + str(spoken))
-                    # Is it a controller of a scene?
-                    cgroup = mnode.get_groups(responder=False)
-                    if len(cgroup) > 0:
-                        mnode = self.parent.isy.nodes[cgroup[0]]
-                        self.parent.logger.info(lpfx + " is a scene controller of " + str(cgroup[0]) + '=' + str(mnode) + ' "' + mnode.name + '"')
-                    self.fauxmos.append([ spoken, device_isy_onoff(self,mnode)])
+        if self.use_spoken is 'true':
+            lpfx = self.lpfx + ':auto_add_isy:'
+            for child in self.parent.isy.nodes.allLowerNodes:
+                if child[0] is 'node':
+                    mnode = self.parent.isy.nodes[child[2]]
+                    spoken = mnode.spoken
+                    if spoken is not None:
+                        # TODO: Should this be a comman seperate list of which echo will respond?
+                        # TODO: Or should that be part of notes?
+                        if spoken == '1':
+                            spoken = mnode.name
+                        self.parent.logger.info(lpfx + " name=" + mnode.name + ", spoken=" + str(spoken))
+                        # Is it a controller of a scene?
+                        cgroup = mnode.get_groups(responder=False)
+                        if len(cgroup) > 0:
+                            mnode = self.parent.isy.nodes[cgroup[0]]
+                            self.parent.logger.info(lpfx + " is a scene controller of " + str(cgroup[0]) + '=' + str(mnode) + ' "' + mnode.name + '"')
+                        self.fauxmos.append([ spoken, device_isy_onoff(self,mnode)])
         #errors += 1
         if errors > 0:
             raise ValueError("See Log")

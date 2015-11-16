@@ -1,10 +1,7 @@
 # ISYHelper
 Program to assist with communication between ISY994 and anything else.
 
-This is a python program to assist with communicating between the [ISY994i Series Controller](https://www.universal-devices.com/residential/isy994i-series) and any other
-device you can access.
-
-The main reason I wrote this was to start learning Python, since I've been stuck in the Perl world for the last 25 years because that is what we use at work.  The reason for Python is that will likely be the most popular way to create virtual node servers with the ISY 5.x firmware, so I want to be ready when that firmware is more stable.
+This is a python program to assist with communicating between the [ISY994i Series Controller](https://www.universal-devices.com/residential/isy994i-series) and any other device you can access.
 
 # Configuration
 
@@ -44,14 +41,12 @@ Controls setting date and time variables on the ISY.  The following ISY variable
 
 The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.
 
-## FauxMo
+## PyHue
 
-This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!  
+This starts a Python Hue Hub Emulator https://github.com/falk0069/hue-upnp that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
 
-To use this, you currently have to grab my version from from git.  So in the same directory where you have ISYHelper (not inside the ISYHelper directory) run:
-git clone https://github.com/jimboca/fauxmo as shown in the install instructions below.
-
-See the config.example.yaml for some examples.
+To use this, you currently ahve to grab my version from git.  The author is reviewing the changes, and should be merged soon.  In the meantime in the same directory where you have ISYHelper (not inside the ISYHelper directory) run: 
+git clone https://github.com/jimboca/hue-upnp as shown in the install instructions below.
 
 ### devices
 
@@ -69,6 +64,19 @@ IMPORTANT: Currently if you 'group device' it will not find your Spoken property
     This is the device or scene address.  This is not required if name is the real device name.
   * spoken
     You can add a device by name, then set spoken to have the spoken name be different than the device name.
+
+## FauxMo
+
+This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!  
+
+To use this, you currently have to grab my version from from git.  So in the same directory where you have ISYHelper (not inside the ISYHelper directory) run:
+git clone https://github.com/jimboca/fauxmo as shown in the install instructions below.
+
+See the config.example.yaml for some examples.
+
+### devices
+  All information for PyHue devices applies to FauxMo devices, along with the following extras.
+  
   * type
     This can be 'ISY' or 'Maker', and the default is 'ISY' if not specified.
   * on_event
@@ -97,13 +105,13 @@ You must forward a port on your router to the IP address of the device runing IS
   - Content Type: application/json
   - Body:  { "token" : "my_secret_token", "type" : "variable", "name" : "varname", "value" : "1" }
 
-  For the above, you can use https if you have a certificate, and your_host_or_ip is for your router name or IP to the outside, and port_num is the port number you set to forward to 8080.  The token must match the token in your config file.
+  For the above URL, you can use https if you have a certificate, and your_host_or_ip is for your router name or IP to the outside, and port_num is the port number you set to forward to 8080.  The token must match the token in your config file.
 
   For the Body:
   - type
   The type of object on the ISY we will set, only variable right now
   - name
-  The Variable name to set, varname in the example
+  The Variable name to set, varname in the example.  Currently only State variables are supported, not Integers!
   - value
   The Value to set the variable
 
@@ -125,6 +133,7 @@ Currently there is no installation processes, you must download to try it.  Also
 - git clone https://github.com/jimboca/ISYHelper
 - git clone https://github.com/jimboca/PyISY
 - git clone https://github.com/jimboca/fauxmo
+- git clone https://github.com/jimboca/hue-upnp
 - cd ISYHelper
 - cp config.example.yaml config.yaml
 - Edit config.yaml for your devices
@@ -132,9 +141,7 @@ Currently there is no installation processes, you must download to try it.  Also
 
 The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log', or whatever you set the log to in your config.yaml.
 
-If you start in a terminal like shown and close the terminal then isyhelper will exit.  If you want it to stay running after closing the terminal, start it with:
-  - ./isyhelper.py > ihs.log 2>&1 &
-This will be fixed in a future version...
+If you start in a terminal like shown and close the terminal then isyhelper will exit.  If you want it to stay running after closing the terminal, start it with the ih.start script
 
 ## Run on startup
 - sudo nano /etc/rc.local
@@ -144,6 +151,7 @@ This will be fixed in a future version...
 ```
 
 # To Do
+
 * Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
 ```
 sudo pip install datetime
@@ -171,6 +179,24 @@ sudo apt-get install python-dev
 sudo pip install pyOpenSSL
 ```
 Note: It takes a while to compile pyOpenSSL packages like cryptography...
+
+* Harmony Hub direct
+
+Look into all the options to control harmony hub directly.
+
+* TiVo
+
+Look into the TiVo interface options for changing channels directly instead of thru the Harmony.
+
+* Spoken for Scenes
+
+Plan to add support for a spoken property on scenes.  Currenty if the spoken property is set on the controller of a scene, then the it will use scene on/off when the device is set off or full on.
+
+* Spoken for Variables
+
+Plan to add support for a naming convention of variables to specify their spoken name.
+
+
 
 # Isssues
 

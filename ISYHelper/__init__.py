@@ -35,10 +35,14 @@ def get_logger(config):
         config['log_file'] = False
 
     if config['log_file'] != False:
-        print('pylink: Writing to log: ' + config['log_file'])
+        print('pylink: Writing to log: ' + config['log_file'] + ' level=' + config['log_level'])
         logging.basicConfig(filename=config['log_file'], format=config['log_format']);
         logger = logging.getLogger('IH')
-        logger.setLevel(logging.DEBUG)
+        # Info by default, unless log_level is debug
+        if config['log_level'] == 'debug':
+            logger.setLevel(logging.DEBUG)
+        else:
+            logger.setLevel(logging.INFO)
     else:
         logger = False
     return logger

@@ -43,8 +43,8 @@ class REST(object):
         web.config.log_file = self.config['log_file']
         web.config.log_toprint = False
         web.config.log_tofile = True
-        web.config.log_interval = "D" # OR W0
-        web.config.log_backups  = 7 # 7 Days?
+        web.config.log_interval = "D" # D=Daily, W0 to rollover every monday
+        web.config.log_backups  = 1 # 7 Days?
         self.app.run(WebLog)
 
 class default:
