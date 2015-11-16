@@ -24,7 +24,7 @@ from ISYHelper.REST     import REST
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-print('ISYHelper: Version %s Started: %s' % (VERSION, datetime.now())
+print('ISYHelper: Version %s Started: %s' % (VERSION, datetime.now()))
 
 # Load the config file.
 config = load_config();
