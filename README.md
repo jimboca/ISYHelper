@@ -164,6 +164,10 @@ sudo pip install web.py
 sudo pip install wsgilog
 sudo apt-get install nmap
 sudo pip install libnmap
+...
+For pyharmony
+...
+sudo pip install sleekxmpp
 ```
 Only if you are going to use the NMap helper (which isn't released yet)
 For some reason 'sudo pip install libnmap' wont work for me?  So had to do it this way:

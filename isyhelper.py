@@ -7,7 +7,7 @@
 # - Automatically define current host IP address.
 #
 
-VERSION = "1.05"
+VERSION = "1.06"
 
 # When run in directory containing downloaded PyIsy
 import sys

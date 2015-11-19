@@ -1,3 +1,4 @@
 #!/bin/sh -x
+
 rm -f ih.log ih.slog
-nohup sudo python isyhelper.py > ih.slog
+sudo nohup ./isyhelper.py > ih.slog &
