@@ -173,7 +173,8 @@ class PyHue(Helper):
                             self.parent.logger.info(lpfx + " is a scene controller of " + str(cgroup[0]) + '=' + str(cnode) + ' "' + cnode.name + '"')
                     else:
                         cnode = mnode
-                        mnode = self.parent.isy.nodes[mnode.controllers[0]]
+                        if len(mnode.controllers) > 0:
+                                mnode = self.parent.isy.nodes[mnode.controllers[0]]
                     self.pdevices.append(pyhue_isy_node_handler(self,spoken,mnode,cnode))
         for var in self.parent.isy.variables.children:
                 # var is a tuple of type, name, number
