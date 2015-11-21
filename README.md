@@ -184,6 +184,10 @@ sudo pip install pyOpenSSL
 ```
 Note: It takes a while to compile pyOpenSSL packages like cryptography...
 
+* Multiple responses for large device count
+
+Currently testing sending seperate responses to a query so only one server can be running to handle > 63 devices, which is the documented hue maximum per hub.  I have currently tested 48 devices and it works as expected.  http://www.developers.meethue.com/documentation/bridge-maximum-settings
+
 * Harmony Hub direct
 
 Look into all the options to control harmony hub directly.
@@ -192,14 +196,9 @@ Look into all the options to control harmony hub directly.
 
 Look into the TiVo interface options for changing channels directly instead of thru the Harmony.
 
-* Spoken for Scenes
-
-Plan to add support for a spoken property on scenes.  Currenty if the spoken property is set on the controller of a scene, then the it will use scene on/off when the device is set off or full on.
-
 * Spoken for Variables
 
 Plan to add support for a naming convention of variables to specify their spoken name.
-
 
 
 # Isssues
@@ -212,7 +211,13 @@ I created one with this info:
 
 - I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
 
+# Versions
 
+2015/11/21:  Version: 1.07  Fixed for scenes that do not have a controller
+2015/11/18:  Version: 1.06  Add support for spoken property on scenes.
+2015/11/15:  Version: 1.05  First official release with PyHue support.  
+2015/09/07:  Fixed when notes exists, but spoken was empty.  Update to PyISY and ISYHelper
+2015/09/05:  A new version is released with better automatic support of the Spoken parameter for Amazon Echo.
 
 **HUGE** Thanks to Automicus (Ryan Kraus) for his https://github.com/automicus/PyISY library which this references.
 
