@@ -183,6 +183,7 @@ Note the process id which is the second column for the isyhelper process and run
 
 * Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
 ```
+sudo apt-get install python-pip
 sudo pip install datetime
 sudo pip install collections
 sudo apt-get install libyaml-cpp0.3
