@@ -124,22 +124,33 @@ The Helper initializes the alarm params on the camera to point back to the REST 
 This will set the ISY variable 'Motion' for the device.
 
 # Install and Run
+
+## Setup your ISY
+
+If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers, then you must set them in the ISY before starting isyhelper.  Go to your ISY admin console and Right click on the device or scene you want to control and select 'Notes' then in set 'Spoken' to 1. By setting it to 1 it will use the device name as the spoke name, if you want this to be different then just enter the spoken name you want to use.
+
 ## Download and configure
+
 Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
 
-- Create a directory where you want to store it:
+- Create a directory where you want to store it in the home directory
+  - cd
   - mkdir isyhelper
   - cd isyhelper
-- git clone https://github.com/jimboca/ISYHelper
-- git clone https://github.com/jimboca/PyISY
-- git clone https://github.com/jimboca/fauxmo
-- git clone https://github.com/jimboca/hue-upnp
-- cd ISYHelper
-- cp config.example.yaml config.yaml
-- Edit config.yaml for your devices
+- Grab all the code
+  - git clone https://github.com/jimboca/ISYHelper
+  - git clone https://github.com/jimboca/PyISY
+  - git clone https://github.com/jimboca/fauxmo
+  - git clone https://github.com/jimboca/hue-upnp
+  - cd ISYHelper
+- Configure the helpers you want to use
+  - cp config.example.yaml config.yaml
+  - nano config.yaml
 - ./isyhelper.py
 
 The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log', or whatever you set the log to in your config.yaml.
+
+Depending on how many devices you have it can take a minute or more to finish starting up, so wait until you see all 'Starting helper' lines for the helpers you have enabled.
 
 If you start in a terminal like shown and close the terminal then isyhelper will exit.  If you want it to stay running after closing the terminal, start it with the ih.start script
 
@@ -147,11 +158,26 @@ If you start in a terminal like shown and close the terminal then isyhelper will
 - sudo nano /etc/rc.local
 - Add this line before the 'exit 0' at the end, where /home/pi is the location you downloaded to.
 ```
-( cd /home/pi/ISYHelper ; ./isyhelper.py & )
+( cd /home/pi/isyhelper/ISYHelper ; ./isyhelper.py & )
 ```
+
+## Restarting
+
+If you started ISYHelper in the forground, then it  not let you stop the program with a control-c.  You must background it with control-z then 'kill %1'.
+
+If it is running from the rc.local script at startup then it is running as root, so you need to find and kill the processs with
+...
+ps -ef | grep isyh
+...
+Note the process id which is the second column for the isyhelper process and run kill on that process id
+
 
 # Known Bugs
 * hue-upnp does not die if http_port is in use and can't be started, just issues the message and continues
+* ISYHelper is trapping and ignoring control-C, I think this is happening in web.py so need to investagate
+* log rolling doesn't seem to be working properly.
+  * Deleting old logs does not clear space, have to restart.
+  * Seems to be keeping all logs instead of just 7 days worth.
 
 # To Do
 
