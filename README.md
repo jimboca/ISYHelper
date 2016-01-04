@@ -241,12 +241,12 @@ I created one with this info:
 
 # Versions
 
-01/03/2016:  Version: 1.08  Update to latest hue-upnp so IP and PORT can now be passed in.
-11/21/2015:  Version: 1.07  Fixed for scenes that do not have a controller
-11/18/2015:  Version: 1.06  Add support for spoken property on scenes.
-11/15/2015:  Version: 1.05  First official release with PyHue support.  
-09/07/2015:  Fixed when notes exists, but spoken was empty.  Update to PyISY and ISYHelper
-09/05/2015:  A new version is released with better automatic support of the Spoken parameter for Amazon Echo.
+* 01/03/2016:  Version: 1.08  Update to latest hue-upnp so IP and PORT can now be passed in.
+* 11/21/2015:  Version: 1.07  Fixed for scenes that do not have a controller
+* 11/18/2015:  Version: 1.06  Add support for spoken property on scenes.
+* 11/15/2015:  Version: 1.05  First official release with PyHue support.  
+* 09/07/2015:  Fixed when notes exists, but spoken was empty.  Update to PyISY and ISYHelper
+* 09/05/2015:  A new version is released with better automatic support of the Spoken parameter for Amazon Echo.
 
 **HUGE** Thanks to Automicus (Ryan Kraus) for his https://github.com/automicus/PyISY library which this references.
 
