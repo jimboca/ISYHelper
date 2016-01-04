@@ -11,9 +11,10 @@ from .PyHue       import PyHue
 
 class Helpers(object):
 
-    def __init__(self,logger,sched,resturl,helper_configs):
+    def __init__(self,logger,sched,config):
         self.logger = logger
-        self.resturl = resturl
+        self.config  = config
+        self.resturl = config['this_host']['url']
         self.children = []
         self.isy = None
         self.sched = sched
@@ -21,7 +22,7 @@ class Helpers(object):
         self.by_ip = {}
         self.by_name = {}
         errors = 0
-        for hconfig in helper_configs:
+        for hconfig in config['helpers']:
             try:
                 self.add_helper(hconfig)
             except ValueError as e:

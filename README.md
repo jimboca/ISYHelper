@@ -150,6 +150,9 @@ If you start in a terminal like shown and close the terminal then isyhelper will
 ( cd /home/pi/ISYHelper ; ./isyhelper.py & )
 ```
 
+# Known Bugs
+* hue-upnp does not die if http_port is in use and can't be started, just issues the message and continues
+
 # To Do
 
 * Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
@@ -200,7 +203,6 @@ Look into the TiVo interface options for changing channels directly instead of t
 
 Plan to add support for a naming convention of variables to specify their spoken name.
 
-
 # Isssues
 
 - IFTTT Maker Channel does not allow a self-signed certificate, so I have not been able to test...  I need to get a real certificate...
@@ -213,11 +215,12 @@ I created one with this info:
 
 # Versions
 
-2015/11/21:  Version: 1.07  Fixed for scenes that do not have a controller
-2015/11/18:  Version: 1.06  Add support for spoken property on scenes.
-2015/11/15:  Version: 1.05  First official release with PyHue support.  
-2015/09/07:  Fixed when notes exists, but spoken was empty.  Update to PyISY and ISYHelper
-2015/09/05:  A new version is released with better automatic support of the Spoken parameter for Amazon Echo.
+01/03/2016:  Version: 1.08  Update to latest hue-upnp so IP and PORT can now be passed in.
+11/21/2015:  Version: 1.07  Fixed for scenes that do not have a controller
+11/18/2015:  Version: 1.06  Add support for spoken property on scenes.
+11/15/2015:  Version: 1.05  First official release with PyHue support.  
+09/07/2015:  Fixed when notes exists, but spoken was empty.  Update to PyISY and ISYHelper
+09/05/2015:  A new version is released with better automatic support of the Spoken parameter for Amazon Echo.
 
 **HUGE** Thanks to Automicus (Ryan Kraus) for his https://github.com/automicus/PyISY library which this references.
 

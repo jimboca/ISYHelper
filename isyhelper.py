@@ -7,7 +7,7 @@
 # - Automatically define current host IP address.
 #
 
-VERSION = "1.07"
+VERSION = "1.08"
 
 # When run in directory containing downloaded PyIsy
 import sys
@@ -42,7 +42,7 @@ if not 'helpers' in config:
     print("ERROR: helpers not defined in config")
     exit(1)
 try:
-    helpers = Helpers(logger,sched,config['this_host']['url'],config['helpers'])
+    helpers = Helpers(logger,sched,config)
 except ValueError as e:
     print("ERROR: Configuration " + str(e))
     exit()

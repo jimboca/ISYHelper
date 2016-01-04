@@ -74,6 +74,8 @@ helpers:
     type: PyHue
     # If this is true it will register all devices with a spoken property
     use_spoken: true
+    # 8081 is the default, change if you have something else running on that port
+    http_port: 8081
 
   # The Belkin WeMo emulator
   - name: FauxMo

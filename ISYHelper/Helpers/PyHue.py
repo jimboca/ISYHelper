@@ -8,8 +8,12 @@ from .Helper import Helper
 sys.path.insert(0,"../hue-upnp")
 import hueUpnp
 from hueUpnp import hue_upnp_super_handler
+# This loads the default hue-upnp config which we will use as a starting point.
+import hueUpnp_config
 
 class pyhue_isy_node_handler(hue_upnp_super_handler):
+        global CONFIG
+        
         def __init__(self, parent, name, node, scene):
                 self.parent  = parent
                 self.name    = name
@@ -133,7 +137,11 @@ class pyhue_isy_node_handler(hue_upnp_super_handler):
 class PyHue(Helper):
 
     def __init__(self,parent,hconfig):
-        self.optional = { 'devices' : { 'default' : [] }, 'use_spoken' : { 'default' : 'true'} }
+        self.optional = {
+                'devices' : { 'default' : [] },
+                'use_spoken' : { 'default' : 'true'},
+                'http_port'  : { 'default' : '8081'},
+        }
         self.pdevices  = []
         self.lpfx = 'pyhue:'
         super(PyHue, self).__init__(parent,hconfig)
@@ -163,7 +171,7 @@ class PyHue(Helper):
                     # TODO: Or should that be part of notes?
                     if spoken == '1':
                         spoken = mnode.name
-                    self.parent.logger.info(lpfx + " name=" + mnode.name + ", spoken=" + str(spoken))
+                    self.parent.logger.info(lpfx + "add_spoken_device: name=" + mnode.name + ", spoken=" + str(spoken))
                     cnode = False
                     if child[0] is 'node':
                         # Is it a controller of a scene?
@@ -176,6 +184,7 @@ class PyHue(Helper):
                         if len(mnode.controllers) > 0:
                                 mnode = self.parent.isy.nodes[mnode.controllers[0]]
                     self.pdevices.append(pyhue_isy_node_handler(self,spoken,mnode,cnode))
+        
         for var in self.parent.isy.variables.children:
                 # var is a tuple of type, name, number
                 # TODO: Use ([^\/]+) instead of (.*) ?
@@ -186,7 +195,12 @@ class PyHue(Helper):
         #errors += 1
         if errors > 0:
             raise ValueError("See Log")
-        self.parent.sched.add_job(partial(hueUpnp.run,self.pdevices,self.parent.logger))
+        hueUpnp_config.devices = self.pdevices
+        hueUpnp_config.logger  = self.parent.logger
+        hueUpnp_config.standard['IP']        = self.parent.config['this_host']['host']
+        hueUpnp_config.standard['HTTP_PORT'] = self.http_port
+        hueUpnp_config.standard['DEBUG'] = True
+        self.parent.sched.add_job(partial(hueUpnp.run,hueUpnp_config))
 
     def add_device(self,config):
         self.parent.logger.info(self.lpfx + ' ' + str(config))
