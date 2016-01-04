@@ -185,18 +185,21 @@ Note the process id which is the second column for the isyhelper process and run
 ```
 sudo apt-get install python-pip
 sudo pip install datetime
-sudo pip install collections
 sudo apt-get install libyaml-cpp0.3
 sudo pip install pyaml
 sudo pip install apscheduler
 sudo pip install PyISY
 sudo pip install web.py
 sudo pip install wsgilog
+```
+These are not really needed?  Or just for NMap helper?
+```
+sudo pip install collections
 sudo apt-get install nmap
 sudo pip install libnmap
-...
-For pyharmony
-...
+```
+For pyharmony?
+```
 sudo pip install sleekxmpp
 ```
 Only if you are going to use the NMap helper (which isn't released yet)
