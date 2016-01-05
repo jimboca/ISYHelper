@@ -181,7 +181,9 @@ Note the process id which is the second column for the isyhelper process and run
 
 # To Do
 
-* Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
+## Document how to run as a service
+
+## Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
 ```
 sudo apt-get install python-pip
 sudo pip install datetime
@@ -217,19 +219,19 @@ sudo pip install pyOpenSSL
 ```
 Note: It takes a while to compile pyOpenSSL packages like cryptography...
 
-* Multiple responses for large device count
+## Multiple responses for large device count
 
 Currently testing sending seperate responses to a query so only one server can be running to handle > 63 devices, which is the documented hue maximum per hub.  I have currently tested 48 devices and it works as expected.  http://www.developers.meethue.com/documentation/bridge-maximum-settings
 
-* Harmony Hub direct
+## Harmony Hub direct
 
 Look into all the options to control harmony hub directly.
 
-* TiVo
+## TiVo
 
 Look into the TiVo interface options for changing channels directly instead of thru the Harmony.
 
-* Spoken for Variables
+## Spoken for Variables
 
 Plan to add support for a naming convention of variables to specify their spoken name.
 
