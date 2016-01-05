@@ -133,6 +133,15 @@ If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers,
 
 Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
 
+- Install Python libraries we need
+  - sudo apt-get install python-pip
+  - sudo pip install datetime
+  - sudo apt-get install libyaml-cpp0.3
+  - sudo pip install pyaml
+  - sudo pip install apscheduler
+  - sudo pip install PyISY
+  - sudo pip install web.py
+  - sudo pip install wsgilog
 - Create a directory where you want to store it in the home directory
   - cd
   - mkdir isyhelper
@@ -172,34 +181,11 @@ ps -ef | grep isyh
 Note the process id which is the second column for the isyhelper process and run kill on that process id
 
 
-# Known Bugs
-* hue-upnp does not die if http_port is in use and can't be started, just issues the message and continues
-* ISYHelper is trapping and ignoring control-C, I think this is happening in web.py so need to investagate
-* log rolling doesn't seem to be working properly.
-  * Deleting old logs does not clear space, have to restart.
-  * Seems to be keeping all logs instead of just 7 days worth.
-
 # To Do
 
 ## Document how to run as a service
 
-## Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
-```
-sudo apt-get install python-pip
-sudo pip install datetime
-sudo apt-get install libyaml-cpp0.3
-sudo pip install pyaml
-sudo pip install apscheduler
-sudo pip install PyISY
-sudo pip install web.py
-sudo pip install wsgilog
-```
-These are not really needed?  Or just for NMap helper?
-```
-sudo pip install collections
-sudo apt-get install nmap
-sudo pip install libnmap
-```
+## Other modules that could be used.
 For pyharmony?
 ```
 sudo pip install sleekxmpp
@@ -210,6 +196,9 @@ For some reason 'sudo pip install libnmap' wont work for me?  So had to do it th
 git clone https://github.com/savon-noir/python-libnmap.git
 cd python-libnmap
 python setup.py install
+sudo pip install collections
+sudo apt-get install nmap
+sudo pip install libnmap
 ```
 If you plan to use SSL (https) for Maker, and you have a real certificate (not self signed) you need to install these as well:
 ```
@@ -225,7 +214,7 @@ Currently testing sending seperate responses to a query so only one server can b
 
 ## Harmony Hub direct
 
-Look into all the options to control harmony hub directly.
+Look into all the options to control harmony hub directly.  Currently looking at pyharmony.
 
 ## TiVo
 
@@ -244,6 +233,13 @@ I created one with this info:
   - http://www.8bitavenue.com/2015/05/webpy-ssl-support/
 
 - I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
+
+# Known Bugs
+* hue-upnp does not die if http_port is in use and can't be started, just issues the message and continues
+* ISYHelper is trapping and ignoring control-C, I think this is happening in web.py so need to investagate
+* log rolling doesn't seem to be working properly.
+  * Deleting old logs does not clear space, have to restart.
+  * Seems to be keeping all logs instead of just 7 days worth.
 
 # Versions
 
