@@ -45,16 +45,13 @@ The config file allows you to choose the level of updates with the interval opti
 
 This starts a Python Hue Hub Emulator https://github.com/falk0069/hue-upnp that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
 
-To use this, you currently ahve to grab my version from git.  The author is reviewing the changes, and should be merged soon.  In the meantime in the same directory where you have ISYHelper (not inside the ISYHelper directory) run: 
-git clone https://github.com/jimboca/hue-upnp as shown in the install instructions below.
-
 ### devices
 
 By default all devices that have a 'Spoken' property set in the ISY notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
 
 You only need to hard code the device in the config for devices that do not have the Spoken property set. You can find all your device names and address http://your_isy_ip/rest/nodes
 
-To control a scene that has a controller, just set the Spoken property on the controller of the scene in the admin console.  If the scene does not have a controller, you will have to add it to the config file.
+To control a scene you can set the Spoken on the scene controller, in which case the PyHue will turn on the scene, or set the Spoken paramater on the secen.
 
 IMPORTANT: Currently if you 'group device' it will not find your Spoken property on your devie.  This is an issue with the PyISY library that I will try to fix soon because almost all my devices were grouped.
 
