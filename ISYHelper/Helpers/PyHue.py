@@ -141,6 +141,7 @@ class PyHue(Helper):
                 'devices' : { 'default' : [] },
                 'use_spoken' : { 'default' : 'true'},
                 'http_port'  : { 'default' : '8081'},
+                'host'       : { 'default' : None},
         }
         self.pdevices  = []
         self.lpfx = 'pyhue:'
@@ -197,7 +198,10 @@ class PyHue(Helper):
             raise ValueError("See Log")
         hueUpnp_config.devices = self.pdevices
         hueUpnp_config.logger  = self.parent.logger
-        hueUpnp_config.standard['IP']        = self.parent.config['this_host']['host']
+        if self.host is None:
+                hueUpnp_config.standard['IP']        = self.parent.config['this_host']['host']
+        else:
+                hueUpnp_config.standard['IP']        = self.host
         hueUpnp_config.standard['HTTP_PORT'] = self.http_port
         hueUpnp_config.standard['DEBUG'] = True
         self.parent.sched.add_job(partial(hueUpnp.run,hueUpnp_config))

@@ -4,6 +4,13 @@ log_file: isyhelper.log
 # log levels: 0 means all
 log_level: 0
 
+# Default host is the default ip address of the currnet host
+# If you have multiple interfaces you can set which one
+# Otherwise don't define it.
+host: 
+# Default port is 8080 for the local REST interface
+port: 
+
 # To run the webserver with SSL, add your info.
 # But, to use with Maker, this can not be a self-signed certificate :-(
 #ssl:
@@ -74,6 +81,8 @@ helpers:
     type: PyHue
     # If this is true it will register all devices with a spoken property
     use_spoken: true
+    # Default host is current, only set if you need a different ip
+    host: 
     # 8081 is the default, change if you have something else running on that port
     http_port: 8081
 
