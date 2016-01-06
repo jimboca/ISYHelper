@@ -45,16 +45,13 @@ The config file allows you to choose the level of updates with the interval opti
 
 This starts a Python Hue Hub Emulator https://github.com/falk0069/hue-upnp that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
 
-To use this, you currently ahve to grab my version from git.  The author is reviewing the changes, and should be merged soon.  In the meantime in the same directory where you have ISYHelper (not inside the ISYHelper directory) run: 
-git clone https://github.com/jimboca/hue-upnp as shown in the install instructions below.
-
 ### devices
 
 By default all devices that have a 'Spoken' property set in the ISY notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
 
 You only need to hard code the device in the config for devices that do not have the Spoken property set. You can find all your device names and address http://your_isy_ip/rest/nodes
 
-To control a scene that has a controller, just set the Spoken property on the controller of the scene in the admin console.  If the scene does not have a controller, you will have to add it to the config file.
+To control a scene you can set the Spoken on the scene controller, in which case the PyHue will turn on the scene, or set the Spoken paramater on the secen.
 
 IMPORTANT: Currently if you 'group device' it will not find your Spoken property on your devie.  This is an issue with the PyISY library that I will try to fix soon because almost all my devices were grouped.
 
@@ -133,6 +130,15 @@ If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers,
 
 Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
 
+- Install Python libraries we need
+  - sudo apt-get install python-pip
+  - sudo pip install datetime
+  - sudo apt-get install libyaml-cpp0.3
+  - sudo pip install pyaml
+  - sudo pip install apscheduler
+  - sudo pip install PyISY
+  - sudo pip install web.py
+  - sudo pip install wsgilog
 - Create a directory where you want to store it in the home directory
   - cd
   - mkdir isyhelper
@@ -172,30 +178,13 @@ ps -ef | grep isyh
 Note the process id which is the second column for the isyhelper process and run kill on that process id
 
 
-# Known Bugs
-* hue-upnp does not die if http_port is in use and can't be started, just issues the message and continues
-* ISYHelper is trapping and ignoring control-C, I think this is happening in web.py so need to investagate
-* log rolling doesn't seem to be working properly.
-  * Deleting old logs does not clear space, have to restart.
-  * Seems to be keeping all logs instead of just 7 days worth.
-
 # To Do
 
-* Generate a complete list of python modules that need to be installed to use this.  I think this is what is required?
+## Document how to run as a service
+
+## Other modules that could be used.
+For pyharmony?
 ```
-sudo pip install datetime
-sudo pip install collections
-sudo apt-get install libyaml-cpp0.3
-sudo pip install pyaml
-sudo pip install apscheduler
-sudo pip install PyISY
-sudo pip install web.py
-sudo pip install wsgilog
-sudo apt-get install nmap
-sudo pip install libnmap
-...
-For pyharmony
-...
 sudo pip install sleekxmpp
 ```
 Only if you are going to use the NMap helper (which isn't released yet)
@@ -204,6 +193,9 @@ For some reason 'sudo pip install libnmap' wont work for me?  So had to do it th
 git clone https://github.com/savon-noir/python-libnmap.git
 cd python-libnmap
 python setup.py install
+sudo pip install collections
+sudo apt-get install nmap
+sudo pip install libnmap
 ```
 If you plan to use SSL (https) for Maker, and you have a real certificate (not self signed) you need to install these as well:
 ```
@@ -213,19 +205,19 @@ sudo pip install pyOpenSSL
 ```
 Note: It takes a while to compile pyOpenSSL packages like cryptography...
 
-* Multiple responses for large device count
+## Multiple responses for large device count
 
 Currently testing sending seperate responses to a query so only one server can be running to handle > 63 devices, which is the documented hue maximum per hub.  I have currently tested 48 devices and it works as expected.  http://www.developers.meethue.com/documentation/bridge-maximum-settings
 
-* Harmony Hub direct
+## Harmony Hub direct
 
-Look into all the options to control harmony hub directly.
+Look into all the options to control harmony hub directly.  Currently looking at pyharmony.
 
-* TiVo
+## TiVo
 
 Look into the TiVo interface options for changing channels directly instead of thru the Harmony.
 
-* Spoken for Variables
+## Spoken for Variables
 
 Plan to add support for a naming convention of variables to specify their spoken name.
 
@@ -238,6 +230,13 @@ I created one with this info:
   - http://www.8bitavenue.com/2015/05/webpy-ssl-support/
 
 - I have only tested this on a RPi with Python 2.7.  I had issues trying to install the web.py module on my RPi with Python 3.2 so if I figure that out I will test with 3.2.
+
+# Known Bugs
+* hue-upnp does not die if http_port is in use and can't be started, just issues the message and continues
+* ISYHelper is trapping and ignoring control-C, I think this is happening in web.py so need to investagate
+* log rolling doesn't seem to be working properly.
+  * Deleting old logs does not clear space, have to restart.
+  * Seems to be keeping all logs instead of just 7 days worth.
 
 # Versions
 
