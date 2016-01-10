@@ -68,6 +68,9 @@ This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) t
 
 The initial release only tracks the hub's current activity in an ISY variable, and allows you to set that ISY variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
 
+The Activity ID's are printed to stdout when starting pyharmony, or you can find them in your isyhelper log file with:
+grep PyHarmony isyhelper.log
+
 See config.example.yaml for the example setup and description.
 
 ## FauxMo
@@ -246,6 +249,7 @@ I created one with this info:
 
 # Versions
 
+* 01/09/2016:  Version: 1.09  First release of PyHarmony support.
 * 01/03/2016:  Version: 1.08  Update to latest hue-upnp so IP and PORT can now be passed in.
 * 11/21/2015:  Version: 1.07  Fixed for scenes that do not have a controller
 * 11/18/2015:  Version: 1.06  Add support for spoken property on scenes.
