@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
 
+import sys
 import web
 from .weblog import WebLog
 from web.wsgiserver import CherryPyWSGIServer
@@ -45,6 +46,7 @@ class REST(object):
         web.config.log_tofile = True
         web.config.log_interval = "D" # D=Daily, W0 to rollover every monday
         web.config.log_backups  = 1 # 7 Days?
+        sys.argv[1:] = [self.config['this_host']['host'],self.config['this_host']['port']]
         self.app.run(WebLog)
 
 class default:

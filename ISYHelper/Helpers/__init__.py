@@ -8,6 +8,7 @@ from .DateAndTime import DateAndTime
 from .Maker       import Maker
 from .FauxMo      import FauxMo
 from .PyHue       import PyHue
+from .PyHarmony   import PyHarmony
 
 class Helpers(object):
 
@@ -51,6 +52,8 @@ class Helpers(object):
             helper = FauxMo(self,hconfig)
         elif dtype == "PyHue":
             helper = PyHue(self,hconfig)
+        elif dtype == "PyHarmony":
+            helper = PyHarmony(self,hconfig)
         else:
             self.logger.error("Unknown helper type "+ dtype)
             raise ValueError("See Log")

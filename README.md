@@ -43,7 +43,7 @@ The config file allows you to choose the level of updates with the interval opti
 
 ## PyHue
 
-This starts a Python Hue Hub Emulator https://github.com/falk0069/hue-upnp that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
+This starts a [Python Hue Hub Emulator](https://github.com/falk0069/hue-upnp) that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
 
 ### devices
 
@@ -61,6 +61,14 @@ IMPORTANT: Currently if you 'group device' it will not find your Spoken property
     This is the device or scene address.  This is not required if name is the real device name.
   * spoken
     You can add a device by name, then set spoken to have the spoken name be different than the device name.
+
+## PyHarmony
+
+This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) to track and control the Harmony Hub from the ISY.
+
+The initial release only tracks the hub's current activity in an ISY variable, and allows you to set that ISY variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
+
+See config.example.yaml for the example setup and description.
 
 ## FauxMo
 
@@ -139,6 +147,7 @@ Currently there is no installation processes, you must download to try it.  Also
   - sudo pip install PyISY
   - sudo pip install web.py
   - sudo pip install wsgilog
+  - sudo pip install sleekxmpp
 - Create a directory where you want to store it in the home directory
   - cd
   - mkdir isyhelper
@@ -148,6 +157,7 @@ Currently there is no installation processes, you must download to try it.  Also
   - git clone https://github.com/jimboca/PyISY
   - git clone https://github.com/jimboca/fauxmo
   - git clone https://github.com/jimboca/hue-upnp
+  - git clone https://github.com/jimboca/pyharmony
   - cd ISYHelper
 - Configure the helpers you want to use
   - cp config.example.yaml config.yaml
@@ -183,10 +193,6 @@ Note the process id which is the second column for the isyhelper process and run
 ## Document how to run as a service
 
 ## Other modules that could be used.
-For pyharmony?
-```
-sudo pip install sleekxmpp
-```
 Only if you are going to use the NMap helper (which isn't released yet)
 For some reason 'sudo pip install libnmap' wont work for me?  So had to do it this way:
 ```

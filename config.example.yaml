@@ -1,8 +1,9 @@
 
 # The log file to write.
 log_file: isyhelper.log
-# log levels: 0 means all
-log_level: 0
+# log level can be debug or info
+# debug will produce a lot of output so watch or disk space!
+log_level: info
 
 # Default host is the default ip address of the currnet host
 # If you have multiple interfaces you can set which one
@@ -52,15 +53,6 @@ helpers:
     # Anything you chose.
     token: my_secret_token
 
-#  - name: Router
-#    type: router
-#    model: asus
-#    # test host
-#    #host: 190.53.26.252
-#    host: 192.168.1.1
-#    user: someuser
-#    password: somepassword
-
   - name: Test
     ip: 192.168.1.60
     type: Test
@@ -108,4 +100,16 @@ helpers:
         on_event:  family_room_watch_chromecast
         off_event: family_room_av_off
 
-
+  # A Harmony Hub
+  # This will track the current activity in the ISY state variable
+  #  s.IH.MyHarmony.CurrentActivity
+  # You must make sure the variable exists as a state variable!
+  - name: MyHarmony
+    type: PyHarmony
+    # Harmony Hub IP address
+    host: 192.168.1.75
+    port: 5222
+    # Harmony Hub login email
+    email: you@somwhere.com
+    # Harmony Hub login password
+    password: your_harmony_password

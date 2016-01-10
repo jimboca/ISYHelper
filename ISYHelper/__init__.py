@@ -26,7 +26,7 @@ def load_config ():
     # port config param overrides port
     port = '8080'
     if 'port' in config and config['port'] is not None:
-        port = config['port']
+        port = str(config['port'])
     print "isyhelper: host: " + this_host + ":" + port
     config['this_host'] = {
         'host' : this_host,
