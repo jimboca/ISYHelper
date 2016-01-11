@@ -73,7 +73,9 @@ class Helpers(object):
         errors = 0
         for helper in self.children:
             try:
-                print("Starting helper: " + helper.name)
+                msg = "Starting helper: %s" % (helper.name)
+                print msg
+                self.logger.info(msg);
                 helper.start()
             except ValueError:
                 errors += 1
@@ -91,4 +93,4 @@ class Helpers(object):
         if name in self.by_name:
             return self.by_name[name]
         self.logger.error("Unable to get helper by name '" + name + "'");
-        return
+        return False

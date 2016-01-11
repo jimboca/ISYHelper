@@ -18,7 +18,7 @@ class device_isy_onoff(object):
         return self.node.on()
  
     def off(self):
-        self.parent.parent.logger.info('device_isy_off: ' + str(self.node));
+        self.parent.parent.logger.info('FauxMo: device_isy_off: ' + str(self.node));
         return self.node.off()
  
 class device_maker_onoff(object):
@@ -28,13 +28,31 @@ class device_maker_onoff(object):
         self.off_event = off_event
         
     def on(self):
-        self.parent.parent.logger.info('device_maker_on:  ' + self.on_event);
+        self.parent.parent.logger.info('FauxMo: device_maker_on:  ' + self.on_event);
         return self.parent.post_ifttt_maker(self.on_event)
  
     def off(self):
-        self.parent.parent.logger.info('device_maker_off: ' + self.off_event);
+        self.parent.parent.logger.info('FauxMo: device_maker_off: ' + self.off_event);
         return self.parent.post_ifttt_maker(self.off_event)
+
+class device_pyharmony(object):
+    def __init__(self, parent, config):
+        self.parent    = parent
+        self.pyharmony = self.parent.parent.get_helper_by_name(config['type_name'])
+        if self.pyharmony is False:
+            msg = "No "+config['name']+" Helper defined for FauxMo access?"
+            raise ValueError(msg)
+        self.on_event  = config['on_event']
+        self.off_event = config['off_event']
+        
+    def on(self):
+        self.parent.parent.logger.info('%s device_pyharmony_on:  %s' % (self.parent.lpfx, self.on_event));
+        return self.pyharmony.start_activity(self.on_event)
  
+    def off(self):
+        self.parent.parent.logger.info('%s device_pyharmony_off: %s' % (self.parent.lpfx, self.off_event));
+        return self.pyharmony.start_activity(self.off_event)
+
 class FauxMo(Helper):
 
     def __init__(self,parent,hconfig):
@@ -44,8 +62,8 @@ class FauxMo(Helper):
         self.ip = "ifttt.ifttt.com"
         self.port = 443
         self.path = 'foo'
-        self.lpfx = 'fauxmo:'
         super(FauxMo, self).__init__(parent,hconfig)
+        self.lpfx = 'FauxMo:%s:' % (self.name)
         
     # Schedule the fauxmo to start immediatly
     def sched(self):
@@ -82,9 +100,13 @@ class FauxMo(Helper):
         #errors += 1
         if errors > 0:
             raise ValueError("See Log")
-        self.parent.sched.add_job(partial(fauxmo.run,True,self.fauxmos,logger=self.parent.logger))
-        #fauxmo.run(True,self.fauxmos)
+        self.parent.logger.info("%s Scheduling fauxmo emulator to run on start" % (self.lpfx))
+        self.parent.sched.add_job(self.run, misfire_grace_time=60, id=self.name)
 
+    def run(self):
+        self.parent.logger.info("%s Starting fauxmo emulator" % (self.lpfx))
+        fauxmo.run(True,self.fauxmos,logger=self.parent.logger)
+        
     def add_device(self,config):
         self.parent.logger.info(self.lpfx + ' ' + str(config))
         if not 'name' in config:
@@ -110,8 +132,10 @@ class FauxMo(Helper):
             #        raise ValueError("Missing maker_secret_key in ifttt from config file")
             #else:
             #    raise ValueError("Missing ifttt with maker_secret_key in config file")
-
             self.fauxmos.append([ config['name'], device_maker_onoff(self,config['on_event'],config['off_event'])])
+
+        elif config['type'] == 'PyHarmony':
+            self.fauxmos.append([ config['name'], device_pyharmony(self,config)])
                 
         else:
             raise ValueError("Unknown FauxMo device type " + config['type'])

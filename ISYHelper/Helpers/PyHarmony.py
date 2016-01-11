@@ -19,6 +19,7 @@ class PyHarmony(Helper):
                 'password'   : { 'default' : None},
                 'host'       : { 'default' : None},
                 'port'       : { 'default' : '5222'},
+                'spoken_prefix' : { 'default' : None},
         }
         self.pdevices  = []
         super(PyHarmony, self).__init__(parent,hconfig)
@@ -37,11 +38,31 @@ class PyHarmony(Helper):
         self.parent.logger.info(self.lpfx + " Initializing Client")
         self.client = harmony_util.get_client(self.email, self.password, self.host, self.port)
         self.parent.logger.info(self.lpfx + " Client: " + str(self.client))
-        # Print the Harmony Activities to the log
         self.harmony_config = self.client.get_config()
-        for a in self.harmony_config['activity']:
-            print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
-            self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
+        #
+        # Build a FauxMo Herlper for this device?
+        if self.spoken_prefix is not None:
+            myfauxmo = {
+                'type'       :  "FauxMo",
+                'name'       : "FauxMo%s" % (self.name),
+                'use_spoken' : False,
+                'devices'    : []
+            }
+            for a in self.harmony_config['activity']:
+                # Print the Harmony Activities to the log
+                print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
+                self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
+                myfauxmo['devices'].append(
+                    {
+                        'name':       "%s %s" % (self.spoken_prefix,a['label']),
+                        'type':      'PyHarmony',
+                        'type_name': self.name,
+                        'command':   'activity',
+                        'on_event':  a['id'],
+                        'off_event': -1,
+                    }
+                )
+            self.parent.add_helper(myfauxmo)
         
         # Intialize our isy variables
         if self.set_current_activity():
@@ -76,6 +97,14 @@ class PyHarmony(Helper):
             self.parent.logger.info(self.lpfx + " Already in Activity " + cur_id + "=" + str(self.current_activity_isy.val))
         else:
             self.parent.logger.info(self.lpfx + " Starting Activity " + str(self.current_activity_isy.val))
-            ret = self.client.start_activity(self.current_activity_isy.val)
+            ret = self.start_activity(self.current_activity_isy.val)
             self.current_activity_id = int(self.current_activity_isy.val)
             self.parent.logger.info(self.lpfx + " Start=" + str(ret))
+
+    def start_activity(self,activity):
+        ret = self.client.start_activity(activity)
+        self.parent.logger.info(self.lpfx + " activity returned:" + str(ret))
+        # Always seems to run none?
+        if ret is None:
+            return True
+        return False

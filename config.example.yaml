@@ -113,3 +113,8 @@ helpers:
     email: you@somwhere.com
     # Harmony Hub login password
     password: your_harmony_password
+    # Setting this to a string indicating the spoken prefix will
+    # start a FauxMo helper for all Activities on this harmony
+    # and prefix this to the activity name to create the full
+    # spoken name.
+    spoken_prefix: None

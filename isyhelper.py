@@ -4,10 +4,9 @@
 # TODO:
 # - web.py only allows passing port on command line?!?!?!?
 #       - Need to pass current host and port to devices, which is used in foscam1
-# - Automatically define current host IP address.
 #
 
-VERSION = "1.09"
+VERSION = "1.10"
 
 # When run in directory containing downloaded PyIsy
 import sys
@@ -23,6 +22,7 @@ from ISYHelper.Helpers  import Helpers
 from ISYHelper.REST     import REST
 
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.executors.pool import ProcessPoolExecutor
 
 print('ISYHelper: Version %s Started: %s' % (VERSION, datetime.now()))
 
@@ -35,6 +35,15 @@ logger = get_logger(config)
 
 # TODO: Move into Devices/init
 # Background scheduler for everyone to share.
+#executors = {
+#    'default': {'type': 'threadpool', 'max_workers': 20},
+#    'processpool': ProcessPoolExecutor(max_workers=5)
+#}
+#job_defaults = {
+#    'coalesce': False,
+#    'max_instances': 2
+#}
+#sched = BackgroundScheduler(logger=logger, executors=executors, job_defaults=job_defaults)
 sched = BackgroundScheduler(logger=logger)
 
 # Create the helpers now to catch config issues now.
@@ -76,5 +85,6 @@ sched.start()
 
 # Start the REST interface
 # TODO: I'm not really happy with having the rest be an object, since auto-reload does not work
+print "Starting REST interface..."
 logger.info("Starting REST interface...")
 rest.run()

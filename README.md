@@ -249,6 +249,7 @@ I created one with this info:
 
 # Versions
 
+* 01/10/2016:  Version: 1.10  Add automatic creation of FauxMo devices for a Harmony Hub
 * 01/09/2016:  Version: 1.09  First release of PyHarmony support.
 * 01/03/2016:  Version: 1.08  Update to latest hue-upnp so IP and PORT can now be passed in.
 * 11/21/2015:  Version: 1.07  Fixed for scenes that do not have a controller
