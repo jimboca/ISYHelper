@@ -51,8 +51,18 @@ class REST(object):
 
 class default:
 
-    def GET(self, name):
-        raise web.forbidden()
+    def GET(self, path):
+        # This is the callers IP.
+        dip = web.ctx['ip']
+        isyhelperRESTObj.helpers.logger.debug('REST:default:GET: ' + dip + ' path='+ path)
+        li = path.split("/")
+        helper_name = li.pop(0)
+        helper = isyhelperRESTObj.helpers.get_helper_by_name(helper_name)
+        if not helper:
+            msg = "REST:default:GET: No helper '%s' exists from '%s' request by %s" % (helper_name, path, dip)
+            isyhelperRESTObj.helpers.logger.error(msg)
+            raise web.notfound()
+        helper.rest_get(self.app,li)
 
     def POST(self, name):
         raise web.forbidden()

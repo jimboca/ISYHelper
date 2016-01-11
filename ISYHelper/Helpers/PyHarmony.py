@@ -108,3 +108,14 @@ class PyHarmony(Helper):
         if ret is None:
             return True
         return False
+
+    def rest_get(self,web_app,command):
+        self.parent.logger.debug(self.lpfx + " rest_get:" + str(command))
+        if command[0] == "list":
+            if command[1] == "activities":
+                print self.harmony_config['activity']
+                return True
+            elif command[1] == "devices":
+                print self.harmony_config['devices']
+                return true
+        raise web_app.notfound()

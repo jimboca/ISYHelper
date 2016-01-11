@@ -154,3 +154,8 @@ class Helper(object):
             return
         else:
             self.parent.logger.error("Invalid response from helper: %s", response)
+
+    # Called by REST when a get call is made for this Helper.
+    def rest_get(self,web_app,command):
+        # No default method for Helpers, they need to define their own.
+        web_app.notfound()
