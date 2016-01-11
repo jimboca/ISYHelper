@@ -117,4 +117,4 @@ helpers:
     # start a FauxMo helper for all Activities on this harmony
     # and prefix this to the activity name to create the full
     # spoken name.
-    spoken_prefix: None
+    spoken_prefix: 

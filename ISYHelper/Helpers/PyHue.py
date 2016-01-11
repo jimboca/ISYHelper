@@ -204,7 +204,7 @@ class PyHue(Helper):
                 hueUpnp_config.standard['IP']        = self.host
         hueUpnp_config.standard['HTTP_PORT'] = self.http_port
         hueUpnp_config.standard['DEBUG'] = True
-        self.parent.sched.add_job(partial(hueUpnp.run,hueUpnp_config))
+        self.parent.sched.add_job(partial(hueUpnp.run,hueUpnp_config), misfire_grace_time=360, id=self.name)
 
     def add_device(self,config):
         self.parent.logger.info(self.lpfx + ' ' + str(config))

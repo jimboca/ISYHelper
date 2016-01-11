@@ -101,7 +101,7 @@ class FauxMo(Helper):
         if errors > 0:
             raise ValueError("See Log")
         self.parent.logger.info("%s Scheduling fauxmo emulator to run on start" % (self.lpfx))
-        self.parent.sched.add_job(self.run, misfire_grace_time=60, id=self.name)
+        self.parent.sched.add_job(self.run, misfire_grace_time=360, id=self.name)
 
     def run(self):
         self.parent.logger.info("%s Starting fauxmo emulator" % (self.lpfx))
