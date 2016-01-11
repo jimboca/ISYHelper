@@ -104,6 +104,7 @@ helpers:
   # This will track the current activity in the ISY state variable
   #  s.IH.MyHarmony.CurrentActivity
   # You must make sure the variable exists as a state variable!
+  # name should be a what makes sense to you, like the location of the hub, FamilyRoomHarmony
   - name: MyHarmony
     type: PyHarmony
     # Harmony Hub IP address
