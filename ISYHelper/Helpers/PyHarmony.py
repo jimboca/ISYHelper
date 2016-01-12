@@ -4,7 +4,7 @@ PyHarmony: ISYHelper pyharmony interface
 
 """
 
-import sys, re
+import sys, re, json
 from functools import partial
 from .Helper import Helper
 sys.path.insert(0,"../pyharmony")
@@ -109,13 +109,31 @@ class PyHarmony(Helper):
             return True
         return False
 
+    def json_dump(self,obj):
+        """Pretty JSON dump of an object."""
+        # sort_keys=True, 
+        return json.dumps(obj, indent=4, separators=(',', ': '))
+
     def rest_get(self,web_app,command):
-        self.parent.logger.debug(self.lpfx + " rest_get:" + str(command))
-        if command[0] == "list":
+        self.parent.logger.debug("%s rest_get: client=%s command=%s" % (self.lpfx,self.client,str(command)))
+        if command[0] == "show":
             if command[1] == "activities":
-                print self.harmony_config['activity']
-                return True
+                return self.json_dump(self.harmony_config['activity'])
             elif command[1] == "devices":
-                print self.harmony_config['devices']
-                return true
-        raise web_app.notfound()
+                return self.json_dump(self.harmony_config['device'])
+            elif command[1] == "config":
+                return self.json_dump(self.harmony_config)
+            elif command[1] == "info":
+                l = [
+                    "Client: %s" % (self.client),
+                    "Current Activity: %s" % str(self.client.get_current_activity())
+                ]
+                for a in self.harmony_config['activity']:
+                    # Print the Harmony Activities to the log
+                    l.append("Activity: '%s'  Id: %s" % (a['label'], a['id']))
+                return "\n".join(l)
+            return "unknown show command '%s'" % command[1]
+
+        # TODO: Raise exception?
+        return "unknown command '%s'" % command[0]
+

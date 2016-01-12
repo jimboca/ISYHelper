@@ -19,6 +19,15 @@ urls = (
 # TODO: There must be a way to pass this in web.application?
 isyhelperRESTObj = False
 
+# From: http://webpy.org/docs/0.3/api#web.httpserver
+class MyApplication(web.application):
+    def run(self, port=8080, *middleware):
+        func = self.wsgifunc(*middleware)
+        return web.httpserver.runsimple(func, ('0.0.0.0', port))
+
+#if __name__ == "__main__":
+#    app = MyApplication(urls, globals())
+#    app.run(port=8888)
 
 class REST(object):
 
@@ -26,7 +35,8 @@ class REST(object):
 
     def __init__(self,config,helpers):
         global isyhelperRESTObj
-        self.app = web.application(urls, globals())
+        #self.app = web.application(urls, globals())
+        self.app = MyApplication(urls, globals())
         self.config = config
         self.helpers = helpers
         isyhelperRESTObj = self
@@ -46,8 +56,11 @@ class REST(object):
         web.config.log_tofile = True
         web.config.log_interval = "D" # D=Daily, W0 to rollover every monday
         web.config.log_backups  = 1 # 7 Days?
-        sys.argv[1:] = [self.config['this_host']['host'],self.config['this_host']['port']]
-        self.app.run(WebLog)
+        arg = "%s:%s" % (self.config['this_host']['host'],self.config['this_host']['port'])
+        print "REST: %s" % (arg)
+        #sys.argv[1] = [ arg ];
+        #sys.argv[1:] = [self.config['this_host']['host'],self.config['this_host']['port']]
+        self.app.run(int(self.config['this_host']['port']),WebLog)
 
 class default:
 
@@ -62,7 +75,7 @@ class default:
             msg = "REST:default:GET: No helper '%s' exists from '%s' request by %s" % (helper_name, path, dip)
             isyhelperRESTObj.helpers.logger.error(msg)
             raise web.notfound()
-        helper.rest_get(self.app,li)
+        return helper.rest_get(isyhelperRESTObj.app,li)
 
     def POST(self, name):
         raise web.forbidden()
