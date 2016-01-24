@@ -27,7 +27,7 @@ class MyApplication(web.application):
 
 #if __name__ == "__main__":
 #    app = MyApplication(urls, globals())
-#    app.run(port=8888)
+#    app.run(port=8080)
 
 class REST(object):
 

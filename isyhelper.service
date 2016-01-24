@@ -1,0 +1,14 @@
+[Unit]
+Description=ISYHelper Server
+Documentation=https://github.com/jimboca/ISYHelper/blob/master/README.md
+After=network-online.target
+
+[Service]
+Type=simple
+#ExecStartPre=cd /home/pi/dev/ISYHelper
+ExecStartPre=cd /home/pi/isyhelper/ISYHelper
+ExecStart=./isyhelper.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

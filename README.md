@@ -195,6 +195,22 @@ Note the process id which is the second column for the isyhelper process and run
 
 ## Document how to run as a service
 
+  * cd /home/pi/isyhelper/ISYHelper (or whereve you put it)
+  * sudo cp isyhelper.service /etc/systemd/system/
+  * Is sytemctl installed?
+    * Run: sudo which systmctl
+    * If it returns nothing, do this:
+      * sudo apt-get install systemd
+      * sudo reboot
+  * sudo systemctl start isyhelper.server
+
+ 2032  sudo systemctl enable isyhelper.system
+ 2033  pwd
+ 2034  ls /etc/systemd/system/
+ 2035  ls -l /etc/systemd/system/
+ 2036  sudo systemctl daemon-reload
+
+
 ## Other modules that could be used.
 Only if you are going to use the NMap helper (which isn't released yet)
 For some reason 'sudo pip install libnmap' wont work for me?  So had to do it this way:

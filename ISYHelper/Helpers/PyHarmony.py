@@ -49,19 +49,20 @@ class PyHarmony(Helper):
                 'devices'    : []
             }
             for a in self.harmony_config['activity']:
-                # Print the Harmony Activities to the log
-                print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
-                self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
-                myfauxmo['devices'].append(
-                    {
-                        'name':       "%s %s" % (self.spoken_prefix,a['label']),
-                        'type':      'PyHarmony',
-                        'type_name': self.name,
-                        'command':   'activity',
-                        'on_event':  a['id'],
-                        'off_event': -1,
-                    }
-                )
+                if a['label'] != 'PowerOff':
+                    # Print the Harmony Activities to the log
+                    print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
+                    self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
+                    myfauxmo['devices'].append(
+                        {
+                            'name':       "%s %s" % (self.spoken_prefix,a['label']),
+                            'type':      'PyHarmony',
+                            'type_name': self.name,
+                            'command':   'activity',
+                            'on_event':  a['id'],
+                            'off_event': -1,
+                        }
+                    )
             self.parent.add_helper(myfauxmo)
         
         # Intialize our isy variables
