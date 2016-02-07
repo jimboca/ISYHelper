@@ -295,6 +295,7 @@ I created one with this info:
 
 # Versions
 
+* 02/07/2016:  Version: 1.11  Add instructions for starting as a service, added REST interface for PyHarmony and PyHue helpers.  PyHue now starts up in not-listening mode, must use REST interface to start the listener.
 * 01/10/2016:  Version: 1.10  Add automatic creation of FauxMo devices for a Harmony Hub
 * 01/09/2016:  Version: 1.09  First release of PyHarmony support.
 * 01/03/2016:  Version: 1.08  Update to latest hue-upnp so IP and PORT can now be passed in.
