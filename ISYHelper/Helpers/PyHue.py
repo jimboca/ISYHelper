@@ -242,10 +242,8 @@ class PyHue(Helper):
         self.parent.logger.debug("%s rest_get: command=%s" % (self.lpfx,str(command)))
         if command[0] == "listen":
             if command[1] == "stop":
-                self.hue_upnp.responder.stop()
-                self.hue_upnp.broadcaster.stop()
+                self.hue_upnp.stop_listener()
                 return "hueUpnp listener stopped\n"
             elif command[1] == "start":
-                self.hue_upnp.responder.start()
-                self.hue_upnp.broadcaster.start()
+                self.hue_upnp.start_listener()
                 return "hueUpnp listener started\n"
