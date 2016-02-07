@@ -182,6 +182,7 @@ If you start it in the forground, then it not let you stop the program with a co
 ### Starting as a service.
 
   This does not work on Raspian Wheezy, you need to be on at least Jessie.
+  
   Is sytemctl installed?
     * Run: sudo which systmctl
     * If it returns nothing, you need to install the newer version, which is currently Jessie
@@ -190,15 +191,13 @@ If you start it in the forground, then it not let you stop the program with a co
       but the prefered method is to just backup all your files and install Jessie from scratch, but I did try the upgraded on one of mine and...
       
   If it is installed you should use this method, not the rc.local method!
-  * cd /home/pi/isyhelper/ISYHelper (or wherever you put it)
-  * sudo cp isyhelper.service /etc/systemd/system/
-  * sudo systemctl start isyhelper.server
-
- 2032  sudo systemctl enable isyhelper.system
- 2033  pwd
- 2034  ls /etc/systemd/system/
- 2035  ls -l /etc/systemd/system/
- 2036  sudo systemctl daemon-reload
+  
+  * cd /home/pi/isyhelper/ISYHelper (or wherever you put it, and if you put it somwhere else, you also need to edit the isyhelper.service file)
+  * sudo cp isyhelper.service /lib/systemd/system/
+  * sudo systemctl --system daemon-reload
+  * sudo systemctl enable isyhelper
+  * sudo systemctl start isyhelper
+  * sudo systemctl status isyhelper
 
 ### rc.local method
 

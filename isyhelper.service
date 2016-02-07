@@ -5,10 +5,10 @@ After=network-online.target
 
 [Service]
 Type=simple
-#ExecStartPre=cd /home/pi/dev/ISYHelper
 ExecStartPre=cd /home/pi/isyhelper/ISYHelper
-ExecStart=./isyhelper.py
+ExecStart=/home/pi/isyhelper/ISYHelper/isyhelper.py
 Restart=always
+User=pi
 
 [Install]
 WantedBy=multi-user.target
