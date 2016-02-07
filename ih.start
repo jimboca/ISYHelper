@@ -1,4 +1,0 @@
-#!/bin/sh -x
-
-rm -f ih.log ih.slog
-sudo nohup ./isyhelper.py > ih.slog &
