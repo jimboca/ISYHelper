@@ -5,6 +5,7 @@
 import logging
 import yaml
 import socket
+import os
 
 # from http://commandline.org.uk/python/how-to-find-out-ip-address-in-python/
 def get_network_ip(rhost):
@@ -46,7 +47,8 @@ def get_logger(config):
         config['log_file'] = False
 
     if config['log_file'] != False:
-        print('isyhelper: Writing to log: ' + config['log_file'] + ' level=' + str(config['log_level'])) 
+        print('isyhelper: Writing to log: ' + config['log_file'] + ' level=' + str(config['log_level']))
+        os.remove(config['log_file'])
         logging.basicConfig(filename=config['log_file'], format=config['log_format']);
         logger = logging.getLogger('IH')
         # Info by default, unless log_level is debug

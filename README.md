@@ -165,6 +165,8 @@ Currently there is no installation processes, you must download to try it.  Also
 - Configure the helpers you want to use
   - cp config.example.yaml config.yaml
   - nano config.yaml
+
+## Manually starting
 - ./isyhelper.py
 
 The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log', or whatever you set the log to in your config.yaml.
@@ -173,14 +175,40 @@ Depending on how many devices you have it can take a minute or more to finish st
 
 If you start in a terminal like shown and close the terminal then isyhelper will exit.  If you want it to stay running after closing the terminal, start it with the ih.start script
 
+If you start it in the forground, then it not let you stop the program with a control-c.  You must background it with control-z then 'kill %1'.
+
 ## Run on startup
-- sudo nano /etc/rc.local
-- Add this line before the 'exit 0' at the end, where /home/pi is the location you downloaded to.
+
+### Starting as a service.
+
+  This does not work on Raspian Wheezy, you need to be on at least Jessie.
+  
+  Is sytemctl installed?
+    * Run: sudo which systmctl
+    * If it returns nothing, you need to install the newer version, which is currently Jessie
+      To upgrade you can do this:
+        http://linuxconfig.org/raspbian-gnu-linux-upgrade-from-wheezy-to-raspbian-jessie-8
+      but the prefered method is to just backup all your files and install Jessie from scratch, but I did try the upgraded on one of mine and...
+      
+  If it is installed you should use this method, not the rc.local method!
+  
+  * cd /home/pi/isyhelper/ISYHelper (or wherever you put it, and if you put it somwhere else, you also need to edit the isyhelper.service file)
+  * sudo cp isyhelper.service /lib/systemd/system/
+  * sudo systemctl --system daemon-reload
+  * sudo systemctl enable isyhelper
+  * sudo systemctl start isyhelper
+  * sudo systemctl status isyhelper
+
+### rc.local method
+
+If you are running Raspian Wheezy you must use this method.  If you are running Jessie, you should NOT use this method, you should use the starting as a service above.
+  * sudo nano /etc/rc.local
+  * Add this line before the 'exit 0' at the end, where /home/pi is the location you downloaded to.
 ```
 ( cd /home/pi/isyhelper/ISYHelper ; ./isyhelper.py & )
 ```
 
-## Restarting
+### Restarting
 
 If you started ISYHelper in the forground, then it  not let you stop the program with a control-c.  You must background it with control-z then 'kill %1'.
 
@@ -192,8 +220,6 @@ Note the process id which is the second column for the isyhelper process and run
 
 
 # To Do
-
-## Document how to run as a service
 
 ## Other modules that could be used.
 Only if you are going to use the NMap helper (which isn't released yet)

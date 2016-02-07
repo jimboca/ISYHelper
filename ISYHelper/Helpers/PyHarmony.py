@@ -4,7 +4,7 @@ PyHarmony: ISYHelper pyharmony interface
 
 """
 
-import sys, re
+import sys, re, json
 from functools import partial
 from .Helper import Helper
 sys.path.insert(0,"../pyharmony")
@@ -49,19 +49,20 @@ class PyHarmony(Helper):
                 'devices'    : []
             }
             for a in self.harmony_config['activity']:
-                # Print the Harmony Activities to the log
-                print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
-                self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
-                myfauxmo['devices'].append(
-                    {
-                        'name':       "%s %s" % (self.spoken_prefix,a['label']),
-                        'type':      'PyHarmony',
-                        'type_name': self.name,
-                        'command':   'activity',
-                        'on_event':  a['id'],
-                        'off_event': -1,
-                    }
-                )
+                if a['label'] != 'PowerOff':
+                    # Print the Harmony Activities to the log
+                    print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
+                    self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
+                    myfauxmo['devices'].append(
+                        {
+                            'name':       "%s %s" % (self.spoken_prefix,a['label']),
+                            'type':      'PyHarmony',
+                            'type_name': self.name,
+                            'command':   'activity',
+                            'on_event':  a['id'],
+                            'off_event': -1,
+                        }
+                    )
             self.parent.add_helper(myfauxmo)
         
         # Intialize our isy variables
@@ -108,3 +109,32 @@ class PyHarmony(Helper):
         if ret is None:
             return True
         return False
+
+    def json_dump(self,obj):
+        """Pretty JSON dump of an object."""
+        # sort_keys=True, 
+        return json.dumps(obj, indent=4, separators=(',', ': '))
+
+    def rest_get(self,web_app,command):
+        self.parent.logger.debug("%s rest_get: client=%s command=%s" % (self.lpfx,self.client,str(command)))
+        if command[0] == "show":
+            if command[1] == "activities":
+                return self.json_dump(self.harmony_config['activity'])
+            elif command[1] == "devices":
+                return self.json_dump(self.harmony_config['device'])
+            elif command[1] == "config":
+                return self.json_dump(self.harmony_config)
+            elif command[1] == "info":
+                l = [
+                    "Client: %s" % (self.client),
+                    "Current Activity: %s" % str(self.client.get_current_activity())
+                ]
+                for a in self.harmony_config['activity']:
+                    # Print the Harmony Activities to the log
+                    l.append("Activity: '%s'  Id: %s" % (a['label'], a['id']))
+                return "\n".join(l)
+            return "unknown show command '%s'" % command[1]
+
+        # TODO: Raise exception?
+        return "unknown command '%s'" % command[0]
+
