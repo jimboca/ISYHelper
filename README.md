@@ -68,8 +68,18 @@ This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) t
 
 The initial release only tracks the hub's current activity in an ISY variable, and allows you to set that ISY variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
 
-The Activity ID's are printed to stdout when starting pyharmony, or you can find them in your isyhelper log file with:
-grep PyHarmony isyhelper.log
+### Activity ID's
+   * The Activity ID's are printed to stdout when starting pyharmony
+   * You can find them in your isyhelper log file with: grep PyHarmony isyhelper.log
+   * You can use the REST interface to find them
+
+### REST Interface
+
+The ISYHelper passes REST interface calls directed to the individual helpers by name which is supported in the PyHarmony Helper using the name you specified in your config.yaml and is set to MyHarmony in the config.example.yaml, so if you are still using the default, the interface is at http://<ipaddress>:8080/MyHarmony.  The following are supported:
+   * /show/info : Print the basic info about the current and available activities
+   * /show/activities : Dump the full json of the harmony activities
+   * /show/devices : Dump the full json of the harmony devices
+   * /show/config : Dump the full json of the harmony config
 
 See config.example.yaml for the example setup and description.
 
