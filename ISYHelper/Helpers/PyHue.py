@@ -6,8 +6,8 @@ import sys, re
 from functools import partial
 from .Helper import Helper
 sys.path.insert(0,"../hue-upnp")
-import hueUpnp
-from hueUpnp import hue_upnp_super_handler
+#import hueUpnp
+from hueUpnp import hue_upnp,hue_upnp_super_handler
 # This loads the default hue-upnp config which we will use as a starting point.
 import hueUpnp_config
 
@@ -204,7 +204,8 @@ class PyHue(Helper):
                 hueUpnp_config.standard['IP']        = self.host
         hueUpnp_config.standard['HTTP_PORT'] = self.http_port
         hueUpnp_config.standard['DEBUG'] = True
-        self.parent.sched.add_job(partial(hueUpnp.run,hueUpnp_config), misfire_grace_time=360, id=self.name)
+        self.hue_upnp = hue_upnp(hueUpnp_config)
+        self.parent.sched.add_job(partial(self.hue_upnp.run,0), misfire_grace_time=360, id=self.name)
 
     def add_device(self,config):
         self.parent.logger.info(self.lpfx + ' ' + str(config))
@@ -236,3 +237,15 @@ class PyHue(Helper):
                 
         else:
             raise ValueError("Unknown PyHue device type " + config['type'])
+
+    def rest_get(self,web_app,command):
+        self.parent.logger.debug("%s rest_get: command=%s" % (self.lpfx,str(command)))
+        if command[0] == "listen":
+            if command[1] == "stop":
+                self.hue_upnp.responder.stop()
+                self.hue_upnp.broadcaster.stop()
+                return "hueUpnp listener stopped\n"
+            elif command[1] == "start":
+                self.hue_upnp.responder.start()
+                self.hue_upnp.broadcaster.start()
+                return "hueUpnp listener started\n"

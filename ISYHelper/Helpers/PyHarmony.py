@@ -41,22 +41,32 @@ class PyHarmony(Helper):
         self.harmony_config = self.client.get_config()
         #
         # Build a FauxMo Herlper for this device?
+        fcnt = 1
         if self.spoken_prefix is not None:
             myfauxmo = {
                 'type'       :  "FauxMo",
-                'name'       : "FauxMo%s" % (self.name),
+                'name'       : "FauxMo%s%d" % (self.name, fcnt),
                 'use_spoken' : False,
                 'devices'    : []
             }
             for a in self.harmony_config['activity']:
                 if a['label'] != 'PowerOff':
+                    # Max of 5 devices per fauxmo seems to work best
+                    if len(myfauxmo['devices']) == 5:
+                        self.parent.add_helper(myfauxmo)
+                        myfauxmo['devices'] = []
+                        fcnt += 1
+                        myfauxmo['name']    = "FauxMo%s%d" % (self.name, fcnt)
                     # Print the Harmony Activities to the log
                     print("%s Activity: %s  Id: %s" % (self.lpfx, a['label'], a['id']))
                     self.parent.logger.info(self.lpfx + "Activity: %s  Id: %s" % (a['label'], a['id']))
+                    # Truncate the activity id to 16 bit integer to use as the port so
+                    # we always get the same port number.
                     myfauxmo['devices'].append(
                         {
                             'name':       "%s %s" % (self.spoken_prefix,a['label']),
                             'type':      'PyHarmony',
+                            'port':      0xFFFF & int(a['id']),
                             'type_name': self.name,
                             'command':   'activity',
                             'on_event':  a['id'],

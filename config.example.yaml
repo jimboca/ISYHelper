@@ -29,10 +29,10 @@ isy:
   # All variables in the ISY will be prefixed with this.
   # variable_prefix: s.IH.
 
-ifttt:
-  # From: https://ifttt.com/maker
-  # Your secret key is:
-  maker_secret_key: ThisShouldBeYourMakerSecretkey
+#ifttt:
+#  # From: https://ifttt.com/maker
+#  # Your secret key is:
+#  maker_secret_key: ThisShouldBeYourMakerSecretkey
 
 # Helpers
 helpers:

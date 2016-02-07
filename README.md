@@ -23,13 +23,17 @@ You can enable SSL by setting the certificate and private_key params to point to
 
 ISYHelper defines unique Helper modules for the type of device, and has been written in a way to make adding any new helpers as easy as possible.
 
-Currently there are:
+## REST Interface
 
-## Test
+The ISYHelper has a REST interface that can direct commands to the individual helpers by name which is supported in the some Helpers.  The interface is available at http://<ipaddress>:<port>/<HelperName> where ipaddress is the IP of you RPi, port is the port specfied in config.yaml, or 8080 by default, and HelperName is the name: specified for the helper.
+
+## Supported Helpers
+
+### Test
 
 This is really just a test device for development.
 
-## DateAndTime
+### DateAndTime
 
 Controls setting date and time variables on the ISY.  The following ISY variables can be set
   * Second
@@ -41,11 +45,11 @@ Controls setting date and time variables on the ISY.  The following ISY variable
 
 The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.
 
-## PyHue
+### PyHue
 
 This starts a [Python Hue Hub Emulator](https://github.com/falk0069/hue-upnp) that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
 
-### devices
+#### devices
 
 By default all devices that have a 'Spoken' property set in the ISY notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
 
@@ -62,20 +66,26 @@ IMPORTANT: Currently if you 'group device' it will not find your Spoken property
   * spoken
     You can add a device by name, then set spoken to have the spoken name be different than the device name.
 
-## PyHarmony
+#### REST Interface
+
+The default interface is at http://<ipaddress>:8080/PyHue.  The following are supported:
+   * /listen/start : Start the listener, this must be done when discovering devices with Alexa or Harmony.
+   * /listen/stopt : Stope the listener, this should be done when you are not discovering to reduce load and traffic on the RPi
+
+### PyHarmony
 
 This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) to track and control the Harmony Hub from the ISY.
 
 The initial release only tracks the hub's current activity in an ISY variable, and allows you to set that ISY variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
 
-### Activity ID's
+#### Activity ID's
    * The Activity ID's are printed to stdout when starting pyharmony
    * You can find them in your isyhelper log file with: grep PyHarmony isyhelper.log
    * You can use the REST interface to find them
 
-### REST Interface
+#### REST Interface
 
-The ISYHelper passes REST interface calls directed to the individual helpers by name which is supported in the PyHarmony Helper using the name you specified in your config.yaml and is set to MyHarmony in the config.example.yaml, so if you are still using the default, the interface is at http://<ipaddress>:8080/MyHarmony.  The following are supported:
+The default interface is at http://<ipaddress>:8080/MyHarmony.  The following are supported:
    * /show/info : Print the basic info about the current and available activities
    * /show/activities : Dump the full json of the harmony activities
    * /show/devices : Dump the full json of the harmony devices
@@ -83,7 +93,7 @@ The ISYHelper passes REST interface calls directed to the individual helpers by 
 
 See config.example.yaml for the example setup and description.
 
-## FauxMo
+### FauxMo
 
 This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!  
 
@@ -92,7 +102,7 @@ git clone https://github.com/jimboca/fauxmo as shown in the install instructions
 
 See the config.example.yaml for some examples.
 
-### devices
+#### devices
   All information for PyHue devices applies to FauxMo devices, along with the following extras.
   
   * type
@@ -104,7 +114,7 @@ See the config.example.yaml for some examples.
 
 Note that each time you start isyhelper.py, you must tell Alexa to 'discover devices'.  This is because the port numbers for each device are random so they are likely different each time.
 
-## Maker
+### Maker
 
 Receives IFTTT Maker requests.  This is the intial version of Maker support, so it will likely change based on feedback from everyone.
 
@@ -112,7 +122,7 @@ Currently the 'name' and 'type' must be 'Maker' in your config file.  You must s
 
 You must forward a port on your router to the IP address of the device runing ISYHelper port 8080.  (Yes it's hardcode to 8080, I need to add a config param...)
 
-### Maker Setup
+#### Maker Setup
 
 - Setup your [Maker channel on IFTTT](https://ifttt.com/maker)
 - Click on the "Make a web request" on that page
@@ -133,7 +143,7 @@ You must forward a port on your router to the IP address of the device runing IS
   - value
   The Value to set the variable
 
-## Foscam1
+### Foscam1
 
 This Helper communicates with a Foscam cameras that use the [IP Camer CGI Interface](http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf), like the Insteon 75790R which are what I tested with.
 

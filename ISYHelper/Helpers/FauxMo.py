@@ -111,6 +111,8 @@ class FauxMo(Helper):
         self.parent.logger.info(self.lpfx + ' ' + str(config))
         if not 'name' in config:
             raise ValueError("No name defined for " + str(config))
+        if not 'port' in config:
+            config['port'] = 0
         if not 'type' in config:
             config['type'] = 'ISY'
         if config['type'] == 'ISY':
@@ -125,17 +127,17 @@ class FauxMo(Helper):
             if node is None:
                 raise ValueError("Unknown device name or address '" + dname + "'")
             else:
-                self.fauxmos.append([ config['name'], device_isy_onoff(self,node)])
+                self.fauxmos.append([ config['name'], device_isy_onoff(self,node)], config['port'])
         elif config['type'] == 'Maker':
             #if self.config in 'ifttt':
             #    if not self.config['ifttt'] in 'maker_secret_key':
             #        raise ValueError("Missing maker_secret_key in ifttt from config file")
             #else:
             #    raise ValueError("Missing ifttt with maker_secret_key in config file")
-            self.fauxmos.append([ config['name'], device_maker_onoff(self,config['on_event'],config['off_event'])])
+            self.fauxmos.append([ config['name'], device_maker_onoff(self,config['on_event'],config['off_event']), config['port']])
 
         elif config['type'] == 'PyHarmony':
-            self.fauxmos.append([ config['name'], device_pyharmony(self,config)])
+            self.fauxmos.append([ config['name'], device_pyharmony(self,config), config['port']])
                 
         else:
             raise ValueError("Unknown FauxMo device type " + config['type'])
