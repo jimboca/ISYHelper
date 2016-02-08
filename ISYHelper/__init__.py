@@ -48,7 +48,8 @@ def get_logger(config):
 
     if config['log_file'] != False:
         print('isyhelper: Writing to log: ' + config['log_file'] + ' level=' + str(config['log_level']))
-        os.remove(config['log_file'])
+        if os.path.exists(config['log_file']):
+            os.remove(config['log_file'])
         logging.basicConfig(filename=config['log_file'], format=config['log_format']);
         logger = logging.getLogger('IH')
         # Info by default, unless log_level is debug
