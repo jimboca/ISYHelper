@@ -25,7 +25,7 @@ ISYHelper defines unique Helper modules for the type of device, and has been wri
 
 ## REST Interface
 
-The ISYHelper has a REST interface that can direct commands to the individual helpers by name which is supported in the some Helpers.  The interface is available at http://<ipaddress>:<port>/<HelperName> where ipaddress is the IP of you RPi, port is the port specfied in config.yaml, or 8080 by default, and HelperName is the name: specified for the helper.
+The ISYHelper has a REST interface that can direct commands to the individual helpers by name which is supported in the some Helpers.  The interface is available at http://ipaddress:port/HelperName where ipaddress is the IP of you RPi, port is the port specfied in config.yaml, or 8080 by default, and HelperName is the name: specified for the helper.
 
 ## Supported Helpers
 
@@ -68,7 +68,7 @@ IMPORTANT: Currently if you 'group device' it will not find your Spoken property
 
 #### REST Interface
 
-The default interface is at http://<ipaddress>:8080/PyHue.  The following are supported:
+The default interface is at http://ipaddress:8080/PyHue.  The following are supported:
    * /listen/start : Start the listener, this must be done when discovering devices with Alexa or Harmony.
    * /listen/stopt : Stope the listener, this should be done when you are not discovering to reduce load and traffic on the RPi
 
@@ -85,7 +85,7 @@ The initial release only tracks the hub's current activity in an ISY variable, a
 
 #### REST Interface
 
-The default interface is at http://<ipaddress>:8080/MyHarmony.  The following are supported:
+The default interface is at http://ipaddress:8080/MyHarmony.  The following are supported:
    * /show/info : Print the basic info about the current and available activities
    * /show/activities : Dump the full json of the harmony activities
    * /show/devices : Dump the full json of the harmony devices
