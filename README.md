@@ -90,6 +90,7 @@ The default interface is at http://ipaddress:8080/MyHarmony.  The following are 
    * /show/activities : Dump the full json of the harmony activities
    * /show/devices : Dump the full json of the harmony devices
    * /show/config : Dump the full json of the harmony config
+   * /send/command/deviceid/command : Send command to device id.  Look up the deviceid's and commands with show/devices.
 
 See config.example.yaml for the example setup and description.
 

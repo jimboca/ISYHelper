@@ -5,11 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-<<<<<<< HEAD
 WorkingDirectory=/home/pi/isyhelper/ISYHelper
-=======
-ExecStartPre=cd /home/pi/isyhelper/ISYHelper
->>>>>>> dev
 ExecStart=/home/pi/isyhelper/ISYHelper/isyhelper.py
 Restart=always
 User=pi
