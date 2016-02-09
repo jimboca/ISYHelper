@@ -144,6 +144,10 @@ class PyHarmony(Helper):
                     l.append("Activity: '%s'  Id: %s" % (a['label'], a['id']))
                 return "\n".join(l)
             return "unknown show command '%s'" % command[1]
+        elif command[0] == "send":
+            if command[1] == "command":
+                ret = self.client.send_command(command[2],command[3])
+                return "%s sent command %s %s" % (self.lpfx,str(command[2]),str(command[3]))
 
         # TODO: Raise exception?
         return "unknown command '%s'" % command[0]
