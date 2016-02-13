@@ -301,7 +301,7 @@ I created one with this info:
 
 # Versions
 
-* 02/12/2016:  Version: 1.13  Add Ping/Pong.  See DateTime module [Ping/Pong](#Ping/Pong) documentation.
+* 02/12/2016:  Version: 1.13  Add Ping/Pong.  See DateTime module [Ping/Pong](#pingpong) documentation.
 * 02/08/2016:  Version: 1.12  Add REST send/command to PyHarmony
 * 02/07/2016:  Version: 1.11  Add instructions for starting as a service, added REST interface for PyHarmony and PyHue helpers.  PyHue now starts up in not-listening mode, must use REST interface to start the listener.
 * 01/10/2016:  Version: 1.10  Add automatic creation of FauxMo devices for a Harmony Hub
