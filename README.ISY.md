@@ -56,6 +56,7 @@ in the admin console Configuration -> Emails/Notifications -> Customizations
 Subject: ISYHelper Status
 
 Body:
+Make sure to change the var.2 references to your Ping, Pong, and Status variables.
 ```
 Ping=${var.2.139}
 Pong=${var.2.137}
