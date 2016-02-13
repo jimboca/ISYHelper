@@ -48,7 +48,7 @@ The config file allows you to choose the level of updates with the interval opti
 
 #### Ping/Pong
 
-The DateAndTime helper now includes a ping/pong feature.  This verifies that ISYHelper is properly observing the changes happening on the ISY and is able to push information back to the ISY.  This works by watching the interval variable and then setting the Pong variable to the matching value.  For example if you have the config interval set to minute, then ISYHelper will set the Pong to match the minute variable as soon as changes.  This allows you to write programs on the ISY to monitor and send notifications if ISYHelper is not working properly.  In my experience, I will see an issue during the ISY Query All which is typically run at 3am each morning, but then the issue clears up shortly after that, but if you have a huge or unstable ISY network it may take longer.
+The DateAndTime helper now includes a ping/pong feature.  This verifies that ISYHelper is properly observing the changes happening on the ISY and is able to push information back to the ISY.  This works by watching the interval variable and then setting the Pong variable to the matching value.  For example if you have the config interval set to minute, then ISYHelper will set the Pong to match the minute variable as soon as changes.  This allows you to write programs on the ISY to monitor and send notifications if ISYHelper is not working properly.  In my experience, I will see an issue during the ISY Query All which is typically run at 3am each morning, but then the issue clears up shortly after that, but if you have a huge or unstable ISY network it may take longer.  See [README.ISY][/README.ISY.md] for example programs.
 
 ### PyHue
 
