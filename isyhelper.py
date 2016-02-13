@@ -6,7 +6,7 @@
 #       - Need to pass current host and port to devices, which is used in foscam1
 #
 
-VERSION = "1.11"
+VERSION = "1.12"
 
 # When run in directory containing downloaded PyIsy
 import sys

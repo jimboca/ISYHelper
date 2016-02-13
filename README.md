@@ -36,14 +36,19 @@ This is really just a test device for development.
 ### DateAndTime
 
 Controls setting date and time variables on the ISY.  The following ISY variables can be set
-  * Second
-  * Minute
-  * Hour
-  * Day
-  * Month
-  * Year
+  * s.IH.DateAndTime.Second
+  * s.IH.DateAndTime.Minute
+  * s.IH.DateAndTime.Hour
+  * s.IH.DateAndTime.Day
+  * s.IH.DateAndTime.Month
+  * s.IH.DateAndTime.Year
+  * s.IH.DateAndTime.Pong
 
-The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.
+The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.  
+
+#### Ping/Pong
+
+The DateAndTime helper now includes a ping/pong feature.  This verifies that ISYHelper is properly observing the changes happening on the ISY and is able to push information back to the ISY.  This works by watching the interval variable and then setting the Pong variable to the matching value.  For example if you have the config interval set to minute, then ISYHelper will set the Pong to match the minute variable as soon as changes.  This allows you to write programs on the ISY to monitor and send notifications if ISYHelper is not working properly.  In my experience, I will see an issue during the ISY Query All which is typically run at 3am each morning, but then the issue clears up shortly after that, but if you have a huge or unstable ISY network it may take longer.
 
 ### PyHue
 
@@ -296,6 +301,7 @@ I created one with this info:
 
 # Versions
 
+* 02/12/2016:  Version: 1.13  Add Ping/Pong.  See DateTime module documentation.
 * 02/08/2016:  Version: 1.12  Add REST send/command to PyHarmony
 * 02/07/2016:  Version: 1.11  Add instructions for starting as a service, added REST interface for PyHarmony and PyHue helpers.  PyHue now starts up in not-listening mode, must use REST interface to start the listener.
 * 01/10/2016:  Version: 1.10  Add automatic creation of FauxMo devices for a Harmony Hub
@@ -312,3 +318,4 @@ I created one with this info:
 - AUTHOR: JimBoCA
 - DATE: 8/10/2015
 - EMAIL: jimboca3@gmail.com
+

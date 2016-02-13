@@ -6,6 +6,7 @@ DateAndTime Monitor
 # TODO: Need isy object defined when start is called...
 
 from datetime import datetime
+from functools import partial
 from .Helper import Helper
 
 class DateAndTime(Helper):
@@ -39,10 +40,14 @@ class DateAndTime(Helper):
         self.Month.val = dt.month
         self.Year.val = dt.year
 
+    def do_pong(self,e,val):
+        self.parent.logger.info('Pong: %s' % val)
+        self.Pong.val = val
+        
     # Initialize all on startup
     def start(self):
         # Build our hash of variables
-        self.isy_variables = ['Day', 'Month', 'Year']
+        self.isy_variables = ['Day', 'Month', 'Year', 'Pong']
         if self.interval_index > 0:
             self.isy_variables.append('Hour')
         if self.interval_index > 1:
@@ -50,13 +55,20 @@ class DateAndTime(Helper):
         if self.interval_index > 2:
             self.isy_variables.append('Second')
         super(DateAndTime, self).start()
-        if self.interval_index > 2:
-            self.second_function()
-        if self.interval_index > 1:
-            self.minute_function()
+        self.Ping = self.Day
         if self.interval_index > 0:
             self.hour_function()
+            self.Ping = self.Hour
+        if self.interval_index > 1:
+            self.minute_function()
+            self.Ping = self.Minute
+        if self.interval_index > 2:
+            self.second_function()
         self.day_function()
+        self.parent.logger.info('Pong: will watch %s' % str(self.Ping))
+        self.ping_handler = self.Ping.val.subscribe(
+            'changed', partial(self.do_pong,val=self.Ping.val))
+        
 
     def sched(self):
         super(DateAndTime, self).sched()
