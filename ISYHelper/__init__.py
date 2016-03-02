@@ -3,6 +3,9 @@
 """
 
 import logging
+import logging.handlers
+import time
+import sys
 import yaml
 import socket
 import os
@@ -50,13 +53,24 @@ def get_logger(config):
         print('isyhelper: Writing to log: ' + config['log_file'] + ' level=' + str(config['log_level']))
         if os.path.exists(config['log_file']):
             os.remove(config['log_file'])
-        logging.basicConfig(filename=config['log_file'], format=config['log_format']);
+        # Create the logger
         logger = logging.getLogger('IH')
-        # Info by default, unless log_level is debug
+        # Set the log level Warning level by default, unless log_level is debug or info
         if config['log_level'] == 'debug':
             logger.setLevel(logging.DEBUG)
-        else:
+        elif config['log_level'] == 'info':
             logger.setLevel(logging.INFO)
+        else:
+            logger.setLevel(logging.WARNING)
+        # Make a handler that writes to a file, 
+        # making a new file at midnight and keeping 30 backups
+        handler = logging.handlers.TimedRotatingFileHandler(config['log_file'], when="midnight", backupCount=7)
+        # Format each log message like this
+        formatter = logging.Formatter(config['log_format'])
+        # Attach the formatter to the handler
+        handler.setFormatter(formatter)
+        # Attach the handler to the logger
+        logger.addHandler(handler)
     else:
         logger = False
     return logger

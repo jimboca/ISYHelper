@@ -27,6 +27,8 @@ ISYHelper defines unique Helper modules for the type of device, and has been wri
 
 The ISYHelper has a REST interface that can direct commands to the individual helpers by name which is supported in the some Helpers.  The interface is available at http://ipaddress:port/HelperName where ipaddress is the IP of you RPi, port is the port specfied in config.yaml, or 8080 by default, and HelperName is the name: specified for the helper.
 
+To verify ISYHelper and the REST interface are alive, go to http://ipaddress:port on a web browser which will disply the version information, and see more information for each type of helper.
+
 ## Supported Helpers
 
 ### Test
@@ -96,6 +98,11 @@ The default interface is at http://ipaddress:8080/MyHarmony.  The following are 
    * /show/devices : Dump the full json of the harmony devices
    * /show/config : Dump the full json of the harmony config
    * /send/command/deviceid/command : Send command to device id.  Look up the deviceid's and commands with show/devices.
+   * /start/activity/activityid : Start the activity activityid.
+
+To see all available /send and /start commands got to http://ipaddress:8080/MyHarmony of your RPi which will list the URL's.
+
+You can use the above rest commands to access the Harmony hub. There is a command interface to change the current Activty, but you shouldn't use this to change the activity from the ISY, you should set the ISY variable instead.
 
 See config.example.yaml for the example setup and description.
 
@@ -174,8 +181,7 @@ Currently there is no installation processes, you must download to try it.  Also
   - sudo pip install pyaml
   - sudo pip install apscheduler
   - sudo pip install PyISY
-  - sudo pip install web.py
-  - sudo pip install wsgilog
+  - sudo pip install Flask
   - sudo pip install sleekxmpp
 - Create a directory where you want to store it in the home directory
   - cd
@@ -301,6 +307,9 @@ I created one with this info:
 
 # Versions
 
+* 03/01/2016:  Version: 1.14  Switch from Python web.py to Flask
+                              Better control of log file rotation each night, and keep 7 for debugging for now.
+			      Default index file at http://ipaddress:8080/ with links shown for PyHarmony activities and commands.
 * 02/12/2016:  Version: 1.13  Add Ping/Pong.  See DateTime module [Ping/Pong](#pingpong) documentation.
 * 02/08/2016:  Version: 1.12  Add REST send/command to PyHarmony
 * 02/07/2016:  Version: 1.11  Add instructions for starting as a service, added REST interface for PyHarmony and PyHue helpers.  PyHue now starts up in not-listening mode, must use REST interface to start the listener.

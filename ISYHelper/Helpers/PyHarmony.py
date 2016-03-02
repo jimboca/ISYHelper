@@ -125,15 +125,16 @@ class PyHarmony(Helper):
         # sort_keys=True, 
         return json.dumps(obj, indent=4, separators=(',', ': '))
 
-    def rest_get(self,web_app,command):
+    def rest_get(self,webapp,request,path):
+        command = path.split("/")
         self.parent.logger.debug("%s rest_get: client=%s command=%s" % (self.lpfx,self.client,str(command)))
         if command[0] == "show":
             if command[1] == "activities":
-                return self.json_dump(self.harmony_config['activity'])
+                return "<pre>" + self.json_dump(self.harmony_config['activity']) + "</pre>"
             elif command[1] == "devices":
-                return self.json_dump(self.harmony_config['device'])
+                return "<pre>" + self.json_dump(self.harmony_config['device']) + "</pre>"
             elif command[1] == "config":
-                return self.json_dump(self.harmony_config)
+                return "<pre>" + self.json_dump(self.harmony_config) + "</pre>"
             elif command[1] == "info":
                 l = [
                     "Client: %s" % (self.client),
@@ -142,13 +143,41 @@ class PyHarmony(Helper):
                 for a in self.harmony_config['activity']:
                     # Print the Harmony Activities to the log
                     l.append("Activity: '%s'  Id: %s" % (a['label'], a['id']))
-                return "\n".join(l)
+                return "<pre>" + "\n".join(l) + "</pre>"
             return "unknown show command '%s'" % command[1]
         elif command[0] == "send":
             if command[1] == "command":
                 ret = self.client.send_command(command[2],command[3])
                 return "%s sent command %s %s" % (self.lpfx,str(command[2]),str(command[3]))
+        elif command[0] == "start":
+            if command[1] == "activity":
+                res = self.client.start_activity(command[2])
+                return "%s sent start activity %s returned %s" % (self.lpfx,str(command[2]),str(res))
 
         # TODO: Raise exception?
         return "unknown command '%s'" % command[0]
 
+    def get_index(self):
+        msg = "<li> %s\n<ul>\n" % (self.name)
+        msg += "<li><a href='%s/show/info'>Show Info</a>\n" % (self.name)
+        msg += "<li><a href='%s/show/config'>Show Config</a>\n" % (self.name)
+        msg += "<li><a href='%s/show/activities'>Show Activities</a>\n" % (self.name)
+        msg += "<ul>\n"
+        for a in self.harmony_config['activity']:
+            msg += "<li><a href='%s/start/activity/%s'>%s</a>\n" % (self.name, a['id'], a['label'])
+        msg += "</ul>\n"
+        msg += "<li><a href='%s/show/devices'>Show Devices</a>\n" % (self.name)
+        msg += "<ul>\n"
+        for d in self.harmony_config['device']:
+            msg += "<li>%s\n<ul>\n" % (d['label'])
+            for c in d['controlGroup']:
+                msg += "<li>%s\n<ul>\n" % (c['name'])
+                for f in c['function']:
+                    # TODO: Why to I have to parse this again??
+                    paction = json.loads(f['action'])
+                    self.parent.logger.debug(self.lpfx + " paction=" + str(paction))
+                    msg += "<li><a href='%s/send/command/%s/%s'>%s</a>\n" % (self.name, paction['deviceId'], paction['command'], f['label'])
+                msg += "</ul>\n"
+            msg += "</ul>\n"
+        msg += "</ul>\n"
+        return msg

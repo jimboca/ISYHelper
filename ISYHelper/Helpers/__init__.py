@@ -94,3 +94,10 @@ class Helpers(object):
             return self.by_name[name]
         self.logger.error("Unable to get helper by name '" + name + "'");
         return False
+
+    def get_index(self):
+        msg = "<br>Configured Helpers:<ul>\n"
+        for helper in self.children:
+            msg += helper.get_index()
+        msg += "</ul>\n"
+        return msg

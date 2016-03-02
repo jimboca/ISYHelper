@@ -238,7 +238,8 @@ class PyHue(Helper):
         else:
             raise ValueError("Unknown PyHue device type " + config['type'])
 
-    def rest_get(self,web_app,command):
+    def rest_get(self,webapp,request,path):
+        command = path.split("/")
         self.parent.logger.debug("%s rest_get: command=%s" % (self.lpfx,str(command)))
         if command[0] == "listen":
             if command[1] == "stop":

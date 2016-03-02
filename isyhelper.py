@@ -6,7 +6,7 @@
 #       - Need to pass current host and port to devices, which is used in foscam1
 #
 
-VERSION = "1.12"
+VERSION = "1.14"
 
 # When run in directory containing downloaded PyIsy
 import sys
@@ -59,9 +59,11 @@ except ValueError as e:
 if 'ifttt' in config:
     helpers.ifttt = config['ifttt']
 
+config['isyhelper_version'] = VERSION
+
 # Prepare the REST interface
 logger.info("Configuring REST interface...")
-rest = REST(config,helpers)
+rest = REST(config,helpers,logger)
 helpers.rest = rest
 
 info = "Starting PyISY: host=" + config['isy']['host'] + " PORT=" + str(config['isy']['port'])
