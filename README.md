@@ -83,11 +83,20 @@ The default interface is at http://ipaddress:8080/PyHue.  The following are supp
 
 This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) to track and control the Harmony Hub from the ISY.
 
-The initial release only tracks the hub's current activity in an ISY variable, and allows you to set that ISY variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
+#### ISY Variable
+
+The Harmony hub current activity in tracked in an ISY variable, and allows you to set that variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually or through a program, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
+
+You must create the Variable that matches the name you chose in the config.yaml.  For example if you used:
+```
+  - name: FamilyRoomHarmony
+    type: PyHarmony
+```
+Then you must create an ISY State Variable "s.IH.FamilyRoomHarmony.CurrentActivity".
 
 #### Activity ID's
    * The Activity ID's are printed to stdout when starting pyharmony
-   * You can find them in your isyhelper log file with: grep PyHarmony isyhelper.log
+   * You can find them in the log_file defined config.yaml: grep PyHarmony isyhelper.log
    * You can use the REST interface to find them
 
 #### REST Interface
@@ -164,11 +173,23 @@ The Helper initializes the alarm params on the camera to point back to the REST 
 
 This will set the ISY variable 'Motion' for the device.
 
-# Install and Run
+# Install, Run, Upgrade, Uninstall
 
 ## Setup your ISY
 
+## Spoken Property
+
 If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers, then you must set them in the ISY before starting isyhelper.  Go to your ISY admin console and Right click on the device or scene you want to control and select 'Notes' then in set 'Spoken' to 1. By setting it to 1 it will use the device name as the spoke name, if you want this to be different then just enter the spoken name you want to use.
+
+## Required Variables
+
+### DateAndTime
+
+If you have the DateAndTime helper enabled, create the variables listed.
+
+### PyHarmony
+
+If you have a PyHarmony helper enabled you must create the 
 
 ## Download and configure
 
@@ -201,7 +222,7 @@ Currently there is no installation processes, you must download to try it.  Also
 ## Manually starting
 - ./isyhelper.py
 
-The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log', or whatever you set the log to in your config.yaml.
+The program will record all information and errors in the log file, to see any errors run 'grep ERROR isyhelper.log', or whatever you set the log to in your config.yaml 'log_file' setting.
 
 Depending on how many devices you have it can take a minute or more to finish starting up, so wait until you see all 'Starting helper' lines for the helpers you have enabled.
 
@@ -250,6 +271,19 @@ ps -ef | grep isyh
 ...
 Note the process id which is the second column for the isyhelper process and run kill on that process id
 
+## Upgrading
+
+## Recent Versions
+
+If you are on a recent version there will be a script in the ISYHelper directory, just run that script
+```
+cd /home/pi/isyhelper/ISYHelper
+./update.sh
+```
+
+## Uninstall
+
+To remove the install just delete the directory isyhelper or whatever you called it and remove it from whichever startup method you chose, rc.local or service.
 
 # To Do
 
@@ -275,10 +309,6 @@ Note: It takes a while to compile pyOpenSSL packages like cryptography...
 ## Multiple responses for large device count
 
 Currently testing sending seperate responses to a query so only one server can be running to handle > 63 devices, which is the documented hue maximum per hub.  I have currently tested 48 devices and it works as expected.  http://www.developers.meethue.com/documentation/bridge-maximum-settings
-
-## Harmony Hub direct
-
-Look into all the options to control harmony hub directly.  Currently looking at pyharmony.
 
 ## TiVo
 
