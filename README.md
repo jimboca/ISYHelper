@@ -19,23 +19,22 @@ The variables defined by the Helpers will all start with "s.IH." (will make this
 
 You can enable SSL by setting the certificate and private_key params to point to your files.
 
-# Helpers
-
-ISYHelper defines unique Helper modules for the type of device, and has been written in a way to make adding any new helpers as easy as possible.
-
-## REST Interface
+# REST Interface
 
 The ISYHelper has a REST interface that can direct commands to the individual helpers by name which is supported in the some Helpers.  The interface is available at http://ipaddress:port/HelperName where ipaddress is the IP of you RPi, port is the port specfied in config.yaml, or 8080 by default, and HelperName is the name: specified for the helper.
 
 To verify ISYHelper and the REST interface are alive, go to http://ipaddress:port on a web browser which will disply the version information, and see more information for each type of helper.
 
-## Supported Helpers
 
-### Test
+# Helpers
+
+ISYHelper defines unique Helper modules for the type of device, and has been written in a way to make adding any new helpers as easy as possible.
+
+## Helper: Test
 
 This is really just a test device for development.
 
-### DateAndTime
+## Helper: DateAndTime
 
 Controls setting date and time variables on the ISY.  The following ISY variables can be set
   * s.IH.DateAndTime.Second
@@ -48,15 +47,15 @@ Controls setting date and time variables on the ISY.  The following ISY variable
 
 The config file allows you to choose the level of updates with the interval option which can be second, minute, hour or day depending on how often you want isyHelper to update, which also determine which variables will be updated on the ISY.  
 
-#### Ping/Pong
+### Ping/Pong
 
 The DateAndTime helper now includes a ping/pong feature.  This verifies that ISYHelper is properly observing the changes happening on the ISY and is able to push information back to the ISY.  This works by watching the interval variable and then setting the Pong variable to the matching value.  For example if you have the config interval set to minute, then ISYHelper will set the Pong to match the minute variable as soon as changes.  This allows you to write programs on the ISY to monitor and send notifications if ISYHelper is not working properly.  In my experience, I will see an issue during the ISY Query All which is typically run at 3am each morning, but then the issue clears up shortly after that, but if you have a huge or unstable ISY network it may take longer.  See [README.ISY](/README.ISY.md) for example programs.
 
-### PyHue
+## Helper: PyHue
 
 This starts a [Python Hue Hub Emulator](https://github.com/falk0069/hue-upnp) that allows the Amazon Echo and Harmony Hub to control and monitor the ISY devices.
 
-#### devices
+### devices
 
 By default all devices that have a 'Spoken' property set in the ISY notes will be added to the list.  To set this right click on the device in the ISY admin console and select 'Notes'.  If you have a recent version of the ISY fireware and admin console you should see the option to add 'Spoken'.  If you want the spoken name to always match the device name, just make the value of the Spoken property be the number one '1', without the quotes.
 
@@ -73,17 +72,17 @@ IMPORTANT: Currently if you 'group device' it will not find your Spoken property
   * spoken
     You can add a device by name, then set spoken to have the spoken name be different than the device name.
 
-#### REST Interface
+### REST Interface
 
 The default interface is at http://ipaddress:8080/PyHue.  The following are supported:
    * /listen/start : Start the listener, this must be done when discovering devices with Alexa or Harmony.
    * /listen/stopt : Stope the listener, this should be done when you are not discovering to reduce load and traffic on the RPi
 
-### PyHarmony
+## Helper: PyHarmony
 
 This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) to track and control the Harmony Hub from the ISY.
 
-#### ISY Variables
+### ISY Variables
 
 The Harmony hub current activity in tracked in an ISY variable, and allows you to set that variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually or through a program, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
 
@@ -94,12 +93,12 @@ You must create the Variable that matches the name you chose in the config.yaml.
 ```
 Then you must create an ISY State Variable "s.IH.FamilyRoomHarmony.CurrentActivity".
 
-#### Activity ID's
+### Activity ID's
    * The Activity ID's are printed to stdout when starting pyharmony
    * You can find them in the log_file defined config.yaml: grep PyHarmony isyhelper.log
    * You can use the REST interface to find them
 
-#### REST Interface
+### REST Interface
 
 The default interface is at http://ipaddress:8080/MyHarmony.  The following are supported:
    * /show/info : Print the basic info about the current and available activities
@@ -115,7 +114,7 @@ You can use the above rest commands to access the Harmony hub. There is a comman
 
 See config.example.yaml for the example setup and description.
 
-### FauxMo
+## Helper: FauxMo
 
 This runs the excellent Belkin WeMo emulator https://github.com/makermusings/fauxmo which allows the Amazon Echo to control the ISY and IFTTT Maker!  
 
@@ -124,7 +123,7 @@ git clone https://github.com/jimboca/fauxmo as shown in the install instructions
 
 See the config.example.yaml for some examples.
 
-#### devices
+### devices
   All information for PyHue devices applies to FauxMo devices, along with the following extras.
   
   * type
@@ -136,7 +135,7 @@ See the config.example.yaml for some examples.
 
 Note that each time you start isyhelper.py, you must tell Alexa to 'discover devices'.  This is because the port numbers for each device are random so they are likely different each time.
 
-### Maker
+## Helper: Maker
 
 Receives IFTTT Maker requests.  This is the intial version of Maker support, so it will likely change based on feedback from everyone.
 
@@ -144,7 +143,7 @@ Currently the 'name' and 'type' must be 'Maker' in your config file.  You must s
 
 You must forward a port on your router to the IP address of the device runing ISYHelper port 8080.  (Yes it's hardcode to 8080, I need to add a config param...)
 
-#### Maker Setup
+### Maker Setup
 
 This may be broken as of 1.14.  If you would like this to be supported, please let me know and I'll test it.  Or you can now use the UDI Portal to access IFTTT.
 
@@ -167,7 +166,7 @@ This may be broken as of 1.14.  If you would like this to be supported, please l
   - value
   The Value to set the variable
 
-### Foscam1
+## Helper: Foscam1
 
 This Helper communicates with a Foscam cameras that use the [IP Camer CGI Interface](http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf), like the Insteon 75790R which are what I tested with.
 
@@ -185,38 +184,22 @@ If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers,
 
 ## Required Variables
 
-### DateAndTime
+If you have the DateAndTime helper enabled, create the [DateAndTime Variables](#Helper:-DateAndTime) listed.
 
-If you have the DateAndTime helper enabled, create the [DateAndTime Variables](#DateAndTime) listed.
-
-### PyHarmony
-
-If you have a PyHarmony helper enabled you must create the variable documented in [PyHarmony Variables](#PyHarmony)
+If you have a PyHarmony helper enabled you must create the variable documented in [PyHarmony Variables](#Helper:-PyHarmony)
 
 ## Download and configure
 
 Currently there is no installation processes, you must download to try it.  Also, the python modules listed in the "To Do" section must be installed.
 
-- Install Python libraries we need
-  - sudo apt-get install python-pip
-  - sudo pip install datetime
-  - sudo apt-get install libyaml-cpp0.3
-  - sudo pip install pyaml
-  - sudo pip install apscheduler
-  - sudo pip install PyISY
-  - sudo pip install Flask
-  - sudo pip install sleekxmpp
 - Create a directory where you want to store it in the home directory
   - cd
   - mkdir isyhelper
   - cd isyhelper
 - Grab all the code
   - git clone https://github.com/jimboca/ISYHelper
-  - git clone https://github.com/jimboca/PyISY
-  - git clone https://github.com/jimboca/fauxmo
-  - git clone https://github.com/jimboca/hue-upnp
-  - git clone https://github.com/jimboca/pyharmony
   - cd ISYHelper
+  - ./install.sh
 - Configure the helpers you want to use
   - cp config.example.yaml config.yaml
   - nano config.yaml
