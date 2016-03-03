@@ -83,7 +83,7 @@ The default interface is at http://ipaddress:8080/PyHue.  The following are supp
 
 This uses the [Python Harmony interface](https://github.com/jimboca/pyharmony) to track and control the Harmony Hub from the ISY.
 
-#### ISY Variable
+#### ISY Variables
 
 The Harmony hub current activity in tracked in an ISY variable, and allows you to set that variable to control the Harmony activity.  Currently the Hub is polled every 30 seconds update the isy variable.  When the ISY variable is changed manually or through a program, that activity is immediatly passed to the Hub so you can create programs on the ISY that control the Harmony Hub!
 
@@ -187,11 +187,11 @@ If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers,
 
 ### DateAndTime
 
-If you have the DateAndTime helper enabled, create the variables listed.
+If you have the DateAndTime helper enabled, create the [DateAndTime Variables][#DateAndTime] listed.
 
 ### PyHarmony
 
-If you have a PyHarmony helper enabled you must create the 
+If you have a PyHarmony helper enabled you must create the variable documented in [PyHarmony][#PyHarmony]
 
 ## Download and configure
 
