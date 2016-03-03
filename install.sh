@@ -9,7 +9,7 @@ sudo apt-get install libyaml-cpp0.3
 sudo pip install pyaml
 sudo pip install apscheduler
 sudo pip install PyISY
-sudo pip install web.py
+sudo pip install Flask
 sudo pip install wsgilog
 sudo pip install sleekxmpp
 git clone https://github.com/jimboca/PyISY
