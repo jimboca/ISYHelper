@@ -184,9 +184,9 @@ If you plan to use the Spoken property from the ISY for FauxMo or PyHue helpers,
 
 ## Required Variables
 
-If you have the DateAndTime helper enabled, create the [DateAndTime Variables](#Helper-DateAndTime) listed.
+If you have the DateAndTime helper enabled, create the [DateAndTime Variables](#helper-dateandtime) listed.
 
-If you have a PyHarmony helper enabled you must create the variable documented in [PyHarmony Variables](#Helper-PyHarmony)
+If you have a PyHarmony helper enabled you must create the variable documented in [PyHarmony Variables](#helper-pyharmony)
 
 ## Download and configure
 
