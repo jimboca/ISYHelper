@@ -258,13 +258,16 @@ Note the process id which is the second column for the isyhelper process and run
 
 ## Upgrading
 
-## Recent Versions
-
 If you are on a recent version there will be a script in the ISYHelper directory, just run that script
 ```
 cd /home/pi/isyhelper/ISYHelper
 ./update.sh
 ```
+If you do not have the update.sh script, just run this first:
+```
+git pull
+```
+Then run the update.sh.
 
 ## Uninstall
 
