@@ -146,6 +146,8 @@ You must forward a port on your router to the IP address of the device runing IS
 
 #### Maker Setup
 
+This may be broken as of 1.14.  If you would like this to be supported, please let me know and I'll test it.  Or you can now use the UDI Portal to access IFTTT.
+
 - Setup your [Maker channel on IFTTT](https://ifttt.com/maker)
 - Click on the "Make a web request" on that page
 - Set the Trigger to what you want
@@ -340,6 +342,7 @@ I created one with this info:
 * 03/01/2016:  Version: 1.14  Switch from Python web.py to Flask
                               Better control of log file rotation each night, and keep 7 for debugging for now.
 			      Default index file at http://ipaddress:8080/ with links shown for PyHarmony activities and commands.
+                              This version may have broken IFTTT support, but I don't think anyone is using it anymore.  If you are, please let me know and I will test it.
 * 02/12/2016:  Version: 1.13  Add Ping/Pong.  See DateTime module [Ping/Pong](#pingpong) documentation.
 * 02/08/2016:  Version: 1.12  Add REST send/command to PyHarmony
 * 02/07/2016:  Version: 1.11  Add instructions for starting as a service, added REST interface for PyHarmony and PyHue helpers.  PyHue now starts up in not-listening mode, must use REST interface to start the listener.
