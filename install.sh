@@ -2,7 +2,7 @@
 
 #git clone https://github.com/jimboca/ISYHelper
 #ISYHelper/install.sh
-
+cd ..
 #sudo apt-get install python-pip
 sudo pip install datetime
 sudo apt-get install libyaml-cpp0.3
