@@ -76,7 +76,7 @@ IMPORTANT: Currently if you 'group device' it will not find your Spoken property
 
 The default interface is at http://ipaddress:8080/PyHue.  The following are supported:
    * /listen/start : Start the listener, this must be done when discovering devices with Alexa or Harmony.
-   * /listen/stopt : Stope the listener, this should be done when you are not discovering to reduce load and traffic on the RPi
+   * /listen/stot  : Stop the listener, this should be done when you are not discovering to reduce load and traffic on the RPi
 
 ## Helper: PyHarmony
 
