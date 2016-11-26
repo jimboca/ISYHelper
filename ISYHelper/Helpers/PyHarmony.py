@@ -8,8 +8,8 @@ import sys, re, json
 from functools import partial
 from .Helper import Helper
 sys.path.insert(0,"../pyharmony")
-
-from pyharmony import util as harmony_util
+#import pyharmony
+from pyharmony import ha_get_token,ha_get_client
 
 class PyHarmony(Helper):
 
@@ -36,7 +36,8 @@ class PyHarmony(Helper):
         self.current_activity_isy = False
         # Setup the Harmony client
         self.parent.logger.info(self.lpfx + " Initializing Client")
-        self.client = harmony_util.get_client(self.email, self.password, self.host, self.port)
+        self.token  = ha_get_token(self.host, self.port)
+        self.client = ha_get_client(self.token, self.host, self.port)
         self.parent.logger.info(self.lpfx + " Client: " + str(self.client))
         self.harmony_config = self.client.get_config()
         #
