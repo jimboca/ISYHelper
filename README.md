@@ -325,6 +325,7 @@ I created one with this info:
 
 # Versions
 
+* 11/26/2016:  Version: 1.15  Changes for latest version of pyharmony to support authorization fixes.
 * 03/01/2016:  Version: 1.14  Switch from Python web.py to Flask
                               Better control of log file rotation each night, and keep 7 for debugging for now.
 			      Default index file at http://ipaddress:8080/ with links shown for PyHarmony activities and commands.
