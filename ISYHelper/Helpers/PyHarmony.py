@@ -117,9 +117,7 @@ class PyHarmony(Helper):
         ret = self.client.start_activity(activity)
         self.parent.logger.info(self.lpfx + " activity returned:" + str(ret))
         # Always seems to run none?
-        if ret is None:
-            return True
-        return False
+        return ret
 
     def json_dump(self,obj):
         """Pretty JSON dump of an object."""
