@@ -145,6 +145,7 @@ class PyHue(Helper):
         }
         self.pdevices  = []
         self.lpfx = 'pyhue:'
+        self.listening = False
         super(PyHue, self).__init__(parent,hconfig)
         
     # Schedule the emulator to start immediatly
@@ -244,7 +245,18 @@ class PyHue(Helper):
         if command[0] == "listen":
             if command[1] == "stop":
                 self.hue_upnp.stop_listener()
+                self.listening = False
                 return "hueUpnp listener stopped\n"
             elif command[1] == "start":
                 self.hue_upnp.start_listener()
+                self.listening = True
                 return "hueUpnp listener started\n"
+
+    def get_index(self):
+        msg = "<li> %s\n<ul>\n" % (self.name)
+        msg += "<li>Listening: %s\n" % (self.listening)
+        msg += "<li><a href='%s/listen/start'>Start Listening</a>\n" % (self.name)
+        msg += "<li><a href='%s/listen/stop'>Stop Listening</a>\n" % (self.name)
+        msg += "</ul>\n"
+        return msg
+        
