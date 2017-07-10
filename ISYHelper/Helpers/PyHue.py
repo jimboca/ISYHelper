@@ -16,6 +16,7 @@ class pyhue_isy_node_handler(hue_upnp_super_handler):
         
         def __init__(self, parent, name, node, scene):
                 self.parent  = parent
+		self.hid     = 0
                 self.name    = name
                 self.node    = node
                 self.scene   = scene
@@ -62,7 +63,8 @@ class pyhue_isy_node_handler(hue_upnp_super_handler):
         def set_bri(self,value):
                 self.parent.parent.logger.info('pyhue:isy_handler.set_bri: %s on val=%d' % (self.name, value));
                 # Only set directly on the node when it's dimmable and value is not 0 or 254
-                if self.node.dimmable and value > 0 and value < 254:
+		# TODO: node.dimmable broken in current PyISY?
+                if value > 0 and value < 254:
                         # val=bri does not work?
                         ret = self.node.on(value)
                         self.parent.parent.logger.info('pyhue:isy_handler.set_bri: %s node.on(%d) = %s' % (self.name, value, str(ret)));
@@ -185,15 +187,16 @@ class PyHue(Helper):
                         cnode = mnode
                         if len(mnode.controllers) > 0:
                                 mnode = self.parent.isy.nodes[mnode.controllers[0]]
-                    self.pdevices.append(pyhue_isy_node_handler(self,spoken,mnode,cnode))
-        
+		    self.insert_device(pyhue_isy_node_handler(self,spoken,mnode,cnode))
+		    
+		    
         for var in self.parent.isy.variables.children:
                 # var is a tuple of type, name, number
                 # TODO: Use ([^\/]+) instead of (.*) ?
                 match_obj = re.match( r'.*\.Spoken\.(.*)', var[1], re.I)
                 if match_obj:
                         var_obj = self.parent.isy.variables[var[0]][var[2]]
-                        self.pdevices.append(pyhue_isy_var_handler(self,match_obj.group(1),var))
+                        self.insert_device(pyhue_isy_var_handler(self,match_obj.group(1),var))
         #errors += 1
         if errors > 0:
             raise ValueError("See Log")
@@ -207,6 +210,12 @@ class PyHue(Helper):
         hueUpnp_config.standard['DEBUG'] = True
         self.hue_upnp = hue_upnp(hueUpnp_config)
         self.parent.sched.add_job(partial(self.hue_upnp.run,0), misfire_grace_time=360, id=self.name)
+
+    def insert_device(self,device):
+        # TODO: See if we have an id with this name and use it
+	# TODO: This is so ID's never change.
+	device.bid = len(self.pdevices)
+        self.pdevices.insert(device.bid,device)
 
     def add_device(self,config):
         self.parent.logger.info(self.lpfx + ' ' + str(config))
@@ -226,7 +235,7 @@ class PyHue(Helper):
             if node is None:
                 raise ValueError("Unknown device name or address '" + dname + "'")
             else:
-                self.pdevices.append([ config['name'], device_isy_onoff(self,node)])
+                self.insert_device([ config['name'], device_isy_onoff(self,node)])
         elif config['type'] == 'Maker':
             #if self.config in 'ifttt':
             #    if not self.config['ifttt'] in 'maker_secret_key':
@@ -234,13 +243,13 @@ class PyHue(Helper):
             #else:
             #    raise ValueError("Missing ifttt with maker_secret_key in config file")
 
-            self.pdevices.append([ config['name'], device_maker_onoff(self,config['on_event'],config['off_event'])])
+            self.insert_device([ config['name'], device_maker_onoff(self,config['on_event'],config['off_event'])])
                 
         else:
             raise ValueError("Unknown PyHue device type " + config['type'])
 
     def rest_get(self,webapp,request,path):
-        command = path.split("/")
+	command = path.split("/")
         self.parent.logger.debug("%s rest_get: command=%s" % (self.lpfx,str(command)))
         if command[0] == "listen":
             if command[1] == "stop":
@@ -257,6 +266,16 @@ class PyHue(Helper):
         msg += "<li>Listening: %s\n" % (self.listening)
         msg += "<li><a href='%s/listen/start'>Start Listening</a>\n" % (self.name)
         msg += "<li><a href='%s/listen/stop'>Stop Listening</a>\n" % (self.name)
+        msg += "<li>ISY Spoken Devices"
+        msg += "\n<ul><table border=1><tr><th>HueId<th>Spoken<th>Node<th>Scene<th>On<th>Off<th>50%</tr>"
+        for device in self.pdevices:
+            msg += "<tr><td>{0}<td>{1}<td>{2}<td>{3}<tr>".format(device.bid,device.name,device.node,device.scene)
+            #msg += "<td><A HREF='{0}'>on</a><td><A HREF='{1}'>off</a><td><A HREF='{2}'>50%</a>".format(device.isy_on,device.isy_off,device.isy_bri.format('128'))
+            #if device.scene is False:
+            #    msg += "<td>{0}<td>&nbsp;".format(device.scene)
+            #else:
+            #    msg += "<td>{0}<td>{1}".format(device.scene._id,device.scene.name)
+        msg += "</table></ul>"
         msg += "</ul>\n"
         return msg
         

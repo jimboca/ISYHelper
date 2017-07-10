@@ -4,6 +4,7 @@
 import sys
 from flask import Flask
 from flask import request
+from traceback import format_exception
 
 debug = False
 
@@ -44,7 +45,7 @@ class REST(object):
     def run(self):
         arg = "%s:%s" % (self.config['this_host']['host'],self.config['this_host']['port'])
         print "REST: %s" % (arg)
-        self.app.run(host=self.config['this_host']['host'], port=int(self.config['this_host']['port']))
+        self.app.run(host=self.config['this_host']['host'], port=int(self.config['this_host']['port']), use_reloader=False)
 
     def get_ip(self):
         return request.remote_addr
@@ -52,7 +53,11 @@ class REST(object):
 @app.route("/")
 def top():
     app.logger.info("REST:top")
-    return "ISYHelper Web Interface version %s<br>Requestor: %s<br>%s" % (CONFIG['isyhelper_version'], request.remote_addr, isyhelperRESTObj.helpers.get_index())
+    try:
+        return "ISYHelper Web Interface version %s<br>Requestor: %s<br>%s" % (CONFIG['isyhelper_version'], request.remote_addr, isyhelperRESTObj.helpers.get_index())
+    except:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        return "<pre>Top Error: %s</pre>" % ''.join(format_exception(exc_type, exc_value, exc_traceback))
 
 #
 # This translates a REST setvar command to pass to the appropriate Helper

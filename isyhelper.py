@@ -6,10 +6,10 @@
 #       - Need to pass current host and port to devices, which is used in foscam1
 #
 
-VERSION = "1.15"
+VERSION = "1.16"
 
 # When run in directory containing downloaded PyIsy
-import sys
+import sys,time,threading,subprocess,re,os
 sys.path.insert(0,"../PyISY")
 sys.path.insert(0,"../VarEvents")
 
@@ -82,11 +82,23 @@ except ValueError as e:
     print("ERROR: Helper ISY Setup " + str(e))
     exit()
 
+sched.add_job(rest.run, misfire_grace_time=360, id="ISYHREST")
+
 # Let the scheduler start jobs
 sched.start()
 
 # Start the REST interface
 # TODO: I'm not really happy with having the rest be an object, since auto-reload does not work
-print "Starting REST interface..."
-logger.info("Starting REST interface...")
-rest.run()
+#print "Starting REST interface..."
+#logger.info("Starting REST interface...")
+#rest.run()
+
+print "Initialization complete..."
+
+try:
+    while True:
+        time.sleep(60)
+except KeyboardInterrupt:
+    print "Exiting from interrupt"
+except:
+    raise
