@@ -12,10 +12,10 @@ sudo pip install PyISY
 sudo pip install Flask
 sudo pip install wsgilog
 sudo pip install sleekxmpp
+sudo pip install pyharmony
 git clone https://github.com/jimboca/PyISY
 git clone https://github.com/jimboca/fauxmo
 git clone https://github.com/jimboca/hue-upnp
-git clone https://github.com/jimboca/pyharmony
 cd ISYHelper
 
 #cp config.example.yaml config.yaml

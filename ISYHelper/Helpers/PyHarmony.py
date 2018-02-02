@@ -9,7 +9,7 @@ from functools import partial
 from .Helper import Helper
 sys.path.insert(0,"../pyharmony")
 #import pyharmony
-from pyharmony import ha_get_token,ha_get_client
+from pyharmony import client as harmony_client
 
 class PyHarmony(Helper):
 
@@ -36,8 +36,7 @@ class PyHarmony(Helper):
         self.current_activity_isy = False
         # Setup the Harmony client
         self.parent.logger.info(self.lpfx + " Initializing Client")
-        self.token  = ha_get_token(self.host, self.port)
-        self.client = ha_get_client(self.token, self.host, self.port)
+        self.client = harmony_client.create_and_connect_client(self.host, self.port)
         self.parent.logger.info(self.lpfx + " Client: " + str(self.client))
         self.harmony_config = self.client.get_config()
         #
